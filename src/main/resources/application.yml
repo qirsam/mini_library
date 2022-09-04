@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: mini_library
+  datasource:
+    username: qirsam_admin
+    password: amidamaru
+    url: jdbc:postgresql://localhost:5431/library_db
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        hbm2ddl:
+          auto: validate
