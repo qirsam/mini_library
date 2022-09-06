@@ -1,7 +1,10 @@
 package com.qirsam.mini_library.http.controller;
 
+import com.qirsam.mini_library.database.entity.filter.BookFilter;
 import com.qirsam.mini_library.database.entity.library.Genre;
+import com.qirsam.mini_library.database.repository.BookRepository;
 import com.qirsam.mini_library.dto.BookCreateUpdateDto;
+import com.qirsam.mini_library.dto.BookReadDto;
 import com.qirsam.mini_library.service.AuthorService;
 import com.qirsam.mini_library.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +22,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/books")
 public class BookController {
 
+    private final BookRepository bookRepository;
     private final AuthorService authorService;
     private final BookService bookService;
+
+    @GetMapping
+    public BookReadDto findAll(Model model, BookFilter filter){
+        return null;
+    }
 
 
     @GetMapping("/add-book")

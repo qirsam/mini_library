@@ -3,13 +3,16 @@ plugins {
     id 'org.springframework.boot' version '2.7.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id "io.freefair.lombok" version "6.5.0.2"
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 apply from: 'version.gradle'
 
 group = 'com.qirsam'
 version = '0.0.1-SNAPSHOT'
 
-
+configurations {
+    querydsl.extendsFrom implementation, compileOnly, runtimeOnly
+}
 
 repositories {
     mavenCentral()
@@ -22,12 +25,25 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     implementation 'org.liquibase:liquibase-core'
+    implementation 'com.querydsl:querydsl-jpa'
+
+    annotationProcessor 'com.querydsl:querydsl-apt'
 
     runtimeOnly 'org.postgresql:postgresql'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation "org.testcontainers:postgresql:${versions.testcontainers}"
+}
+
+querydsl {
+    jpa = true
+    library = "com.querydsl:querydsl-apt:${versions.querydsl}"
+    querydslSourcesDir = "$buildDir/generated/sources/annotationProcessor/java/main"
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
 }
 
 test {
