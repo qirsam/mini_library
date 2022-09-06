@@ -13,3 +13,9 @@ spring:
         show_sql: true
         hbm2ddl:
           auto: validate
+    open-in-view: false
+  mvc:
+    format:
+      date: iso
+
+

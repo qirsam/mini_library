@@ -7,4 +7,5 @@ public class AuthorReadDto {
     Integer id;
     String firstname;
     String lastname;
+    String description;
 }

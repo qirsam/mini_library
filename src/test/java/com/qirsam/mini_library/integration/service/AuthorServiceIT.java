@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 class AuthorServiceIT extends IntegrationTestBase {
 
-    @Autowired
-    private AuthorService authorService;
+        @Autowired
+        private AuthorService authorService;
 
     @Test
     void findAll() {

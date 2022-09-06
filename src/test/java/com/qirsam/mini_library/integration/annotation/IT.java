@@ -1,6 +1,5 @@
 package com.qirsam.mini_library.integration.annotation;
 
-import com.qirsam.mini_library.TestMiniLibraryApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +13,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @ActiveProfiles("test")
 @Transactional
-@SpringBootTest(classes = TestMiniLibraryApplication.class)
+@SpringBootTest
 public @interface IT {
 }

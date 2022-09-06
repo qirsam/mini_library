@@ -22,6 +22,9 @@ public class Book extends BaseEntity<Long> {
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
+    @Enumerated(EnumType.STRING)
+    private Genre genre;
+
     @Column(nullable = false)
     private String description;
 }

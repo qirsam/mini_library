@@ -11,7 +11,8 @@ public class AuthorReadMapper implements Mapper<Author, AuthorReadDto> {
         return new AuthorReadDto(
                 object.getId(),
                 object.getFirstname(),
-                object.getLastname()
+                object.getLastname(),
+                object.getDescription()
         );
     }
 }
