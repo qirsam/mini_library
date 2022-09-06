@@ -1,17 +1,21 @@
 package com.qirsam.mini_library.service;
 
 import com.qirsam.mini_library.database.entity.filter.BookFilter;
+import com.qirsam.mini_library.database.querydsl.QPredicates;
 import com.qirsam.mini_library.database.repository.BookRepository;
 import com.qirsam.mini_library.dto.BookCreateUpdateDto;
 import com.qirsam.mini_library.dto.BookReadDto;
 import com.qirsam.mini_library.mapper.BookCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.BookReadMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
+
+import static com.qirsam.mini_library.database.entity.library.QBook.book;
 
 @Service
 @AllArgsConstructor
@@ -22,11 +26,15 @@ public class BookService {
     private final BookReadMapper bookReadMapper;
     private final BookRepository bookRepository;
 
-    public List<BookReadDto> findAll(BookFilter filter){
-        return bookRepository.findAll().stream()
-//                .filter(book -> book.)
-                .map(bookReadMapper::map)
-                .toList();
+    public Page<BookReadDto> findAll(BookFilter filter, Pageable pageable) {
+        var predicate = QPredicates.builder()
+                .add(filter.title(), book.title::containsIgnoreCase)
+                .add(filter.authorLastname(), book.author.lastname::containsIgnoreCase)
+                .add(filter.genre(), book.genre::eq)
+                .build();
+
+        return bookRepository.findAll(predicate, pageable)
+                .map(bookReadMapper::map);
     }
 
     @Transactional

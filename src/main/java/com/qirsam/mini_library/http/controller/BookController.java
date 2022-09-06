@@ -2,12 +2,12 @@ package com.qirsam.mini_library.http.controller;
 
 import com.qirsam.mini_library.database.entity.filter.BookFilter;
 import com.qirsam.mini_library.database.entity.library.Genre;
-import com.qirsam.mini_library.database.repository.BookRepository;
 import com.qirsam.mini_library.dto.BookCreateUpdateDto;
-import com.qirsam.mini_library.dto.BookReadDto;
+import com.qirsam.mini_library.dto.PageResponse;
 import com.qirsam.mini_library.service.AuthorService;
 import com.qirsam.mini_library.service.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,13 +22,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/books")
 public class BookController {
 
-    private final BookRepository bookRepository;
     private final AuthorService authorService;
     private final BookService bookService;
 
     @GetMapping
-    public BookReadDto findAll(Model model, BookFilter filter){
-        return null;
+    public String findAll(Model model, BookFilter filter, Pageable pageable){
+        var page = bookService.findAll(filter, pageable);
+        model.addAttribute("books", PageResponse.of(page));
+        model.addAttribute("genres", Genre.values());
+        model.addAttribute("filter", filter);
+        return "book/books";
     }
 
 
@@ -37,7 +40,7 @@ public class BookController {
         model.addAttribute("book", book);
         model.addAttribute("genres", Genre.values());
         model.addAttribute("authors", authorService.findAll());
-        return "books/add-book";
+        return "book/add-book";
     }
     
     @PostMapping("/add-book")

@@ -5,7 +5,7 @@
     <title>Добавить книгу</title>
 </head>
 <body>
-<form th:action="@{/books/add-book}" enctype="multipart/form-data" method="post" th:object="${book}">
+<form th:action="@{/templates/book/add-book}" enctype="multipart/form-data" method="post" th:object="${book}">
     <label for="title">Название книги:
         <input id="title" type="text" name="title" th:value="*{title}">
     </label><br>

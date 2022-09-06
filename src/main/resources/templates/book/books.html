@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список книг</title>
+</head>
+<body>
+<form action="/books">
+    <div>
+    <label for="title">Название книги
+        <input id="title" type="text" name="title" th:value="${filter.title()}">
+    </label>
+    <label for="authorLastname">Фамилия автора
+        <input id="authorLastname" type="text" name="authorLastname" th:value="${filter.authorLastname()}">
+    </label>
+        <label for="genre">
+            <select id="genre" name="genre" th:value="${genres}">
+                <option th:each="genre : ${genres}"
+                        th:value="${genre}"
+                        th:selected="${genre == filter.genre}"
+                        th:text="${genre.value}">Жанр
+                </option>
+            </select>
+        </label>
+    </div>
+    <button type="submit">Filter</button>
+</form>
+<div th:each="book : ${books.content()}">
+    <a th:href="@{'/books/' + ${book.id}}" th:text="|${book.author.lastname} ${book.author.firstname}. ${book.title}|">Книга</a>
+</div>
+</body>
+</html>
