@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "users")
 @Entity
 @ToString(exclude = "userBooks")
-@EqualsAndHashCode(of = "email")
+@EqualsAndHashCode(of = "email", callSuper = false)
 public class User extends BaseEntity<Long> {
 
     @Column(unique = true, nullable = false)

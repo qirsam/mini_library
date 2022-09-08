@@ -2,10 +2,7 @@ package com.qirsam.mini_library.database.entity.user;
 
 import com.qirsam.mini_library.database.entity.BaseEntity;
 import com.qirsam.mini_library.database.entity.library.Book;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -15,6 +12,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "users_book")
+@EqualsAndHashCode(callSuper=false)
 public class UserBook extends BaseEntity<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
