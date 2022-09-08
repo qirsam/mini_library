@@ -1,6 +1,5 @@
 package com.qirsam.mini_library.integration.database.repository;
 
-import com.qirsam.mini_library.database.entity.filter.BookFilter;
 import com.qirsam.mini_library.database.repository.BookRepository;
 import com.qirsam.mini_library.integration.IntegrationTestBase;
 import org.junit.jupiter.api.Test;
@@ -27,12 +26,5 @@ class BookRepositoryTest extends IntegrationTestBase {
 
     }
 
-    @Test
-    void findAllByFilter() {
-        var filter = new BookFilter(
-                null, "Толк", null
-        );
-        var result = bookRepository.findAllByFilter(filter);
-        assertThat(result).hasSize(1);
-    }
+
 }

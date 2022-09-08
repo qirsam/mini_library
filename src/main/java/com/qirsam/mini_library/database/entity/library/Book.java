@@ -1,9 +1,12 @@
 package com.qirsam.mini_library.database.entity.library;
 
 import com.qirsam.mini_library.database.entity.BaseEntity;
+import com.qirsam.mini_library.database.entity.user.UserBook;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -11,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @Table(name = "book")
 @Entity
-@ToString
+@ToString(exclude = "userBooks")
 @EqualsAndHashCode(callSuper = false)
 public class Book extends BaseEntity<Long> {
 
@@ -27,4 +30,8 @@ public class Book extends BaseEntity<Long> {
 
     @Column(nullable = false)
     private String description;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "book")
+    private List<UserBook> userBooks = new ArrayList<>();
 }

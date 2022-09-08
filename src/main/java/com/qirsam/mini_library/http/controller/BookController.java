@@ -8,13 +8,12 @@ import com.qirsam.mini_library.service.AuthorService;
 import com.qirsam.mini_library.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -25,8 +24,21 @@ public class BookController {
     private final AuthorService authorService;
     private final BookService bookService;
 
+    @GetMapping("/{id}")
+    public String findById(@PathVariable Long id, Model model) {
+        return bookService.findById(id)
+                .map(book -> {
+                    model.addAttribute("book", book);
+                    model.addAttribute("genres", Genre.values());
+                    model.addAttribute("authors", authorService.findAll());
+
+                    return "book/book";
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
     @GetMapping
-    public String findAll(Model model, BookFilter filter, Pageable pageable){
+    public String findAll(Model model, BookFilter filter, Pageable pageable) {
         var page = bookService.findAll(filter, pageable);
         model.addAttribute("books", PageResponse.of(page));
         model.addAttribute("genres", Genre.values());
@@ -42,12 +54,12 @@ public class BookController {
         model.addAttribute("authors", authorService.findAll());
         return "book/add-book";
     }
-    
+
     @PostMapping("/add-book")
     public String create(@ModelAttribute BookCreateUpdateDto book,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("book", book);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/books/add-book";

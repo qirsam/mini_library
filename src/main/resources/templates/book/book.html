@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${book.title}">Title</title>
+</head>
+<body>
+<b th:text="${book.title}">Название книги</b> <br>
+<b th:text="${book.author.lastname} ">Фамилия автора </b>
+<b th:text="${book.author.firstname}">Фамилия автора </b>
+<article th:text="${book.description}">Описание книги</article>
+</body>
+</html>

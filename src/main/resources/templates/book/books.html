@@ -24,6 +24,7 @@
         </label>
     </div>
     <button type="submit">Filter</button>
+<!--    todo:add Page-->
 </form>
 <div th:each="book : ${books.content()}">
     <a th:href="@{'/books/' + ${book.id}}" th:text="|${book.author.lastname} ${book.author.firstname}. ${book.title}|">Книга</a>
