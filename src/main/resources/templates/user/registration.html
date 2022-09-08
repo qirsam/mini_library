@@ -6,8 +6,8 @@
 </head>
 <body>
 <form th:action="@{/registration}" enctype="multipart/form-data" method="post" th:object="${user}">
-    <label for="email">Электронная почта
-        <input id="email" type="email" name="email" th:value="*{email}">
+    <label for="username">Электронная почта
+        <input id="username" type="email" name="username" th:value="*{getUsername}">
     </label><br>
     <label for="rawPassword">Пароль
         <input id="rawPassword" type="password" name="rawPassword">

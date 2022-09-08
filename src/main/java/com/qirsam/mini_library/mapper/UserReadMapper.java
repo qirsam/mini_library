@@ -11,7 +11,7 @@ public class UserReadMapper implements Mapper<User, UserReadDto> {
     public UserReadDto map(User object) {
         return new UserReadDto(
                 object.getId(),
-                object.getEmail(),
+                object.getUsername(),
                 object.getFirstname(),
                 object.getLastname(),
                 object.getBirthDate(),

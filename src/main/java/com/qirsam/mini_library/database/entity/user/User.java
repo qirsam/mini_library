@@ -15,11 +15,11 @@ import java.util.List;
 @Table(name = "users")
 @Entity
 @ToString(exclude = "userBooks")
-@EqualsAndHashCode(of = "email", callSuper = false)
+@EqualsAndHashCode(of = "username", callSuper = false)
 public class User extends BaseEntity<Long> {
 
     @Column(unique = true, nullable = false)
-    private String email;
+    private String username;
 
     @Column(nullable = false)
     private String password;

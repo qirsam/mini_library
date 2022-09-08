@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Value
 public class UserCreateUpdateDto {
 
-    String email;
+    String username;
 
     String rawPassword;
 

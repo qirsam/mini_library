@@ -3,11 +3,14 @@ package com.qirsam.mini_library.http.controller;
 import com.qirsam.mini_library.dto.UserCreateUpdateDto;
 import com.qirsam.mini_library.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,5 +37,13 @@ public class UserController {
         }
         userService.create(user);
         return "redirect:/login";
+    }
+
+    @GetMapping("/user/{id}")
+    public String findById(@PathVariable("id") Long id,
+                           Model model,
+                           @AuthenticationPrincipal UserDetails userDetails){
+        // TODO: 09.09.2022 only current user and admin/moderator view page
+        return "user/user";
     }
 }
