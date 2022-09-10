@@ -36,9 +36,4 @@ public class User extends BaseEntity<Long> {
     @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<UserBook> userBooks = new ArrayList<>();
-
-
-
-
-
 }

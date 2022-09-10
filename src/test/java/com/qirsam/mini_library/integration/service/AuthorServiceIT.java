@@ -2,16 +2,16 @@ package com.qirsam.mini_library.integration.service;
 
 import com.qirsam.mini_library.integration.IntegrationTestBase;
 import com.qirsam.mini_library.service.AuthorService;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
+@RequiredArgsConstructor
 class AuthorServiceIT extends IntegrationTestBase {
 
-        @Autowired
-        private AuthorService authorService;
+        private final AuthorService authorService;
 
     @Test
     void findAll() {

@@ -25,4 +25,14 @@ public class UserBook extends BaseEntity<Long> {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    public void setUser(User user) {
+        this.user = user;
+        this.user.getUserBooks().add(this);
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+        this.book.getUserBooks().add(this);
+    }
 }

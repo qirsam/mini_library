@@ -2,8 +2,8 @@ package com.qirsam.mini_library.integration.database.repository;
 
 import com.qirsam.mini_library.database.repository.BookRepository;
 import com.qirsam.mini_library.integration.IntegrationTestBase;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,10 +12,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 
-class BookRepositoryTest extends IntegrationTestBase {
+@RequiredArgsConstructor
+class BookRepositoryIT extends IntegrationTestBase {
 
-    @Autowired
-    private BookRepository bookRepository;
+
+    private final BookRepository bookRepository;
 
 
     @Test

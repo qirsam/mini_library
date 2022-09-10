@@ -26,7 +26,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Transactional
-    public UserReadDto create(UserCreateUpdateDto userDto){
+    public UserReadDto create(UserCreateUpdateDto userDto) {
         return Optional.of(userDto)
                 .map(userCreateUpdateMapper::map)
                 .map(userRepository::save)
@@ -43,5 +43,10 @@ public class UserService implements UserDetailsService {
                         Collections.singleton(user.getRole())
                 ))
                 .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user" + username));
+    }
+
+    public Optional<UserReadDto> findById(Long id) {
+        return userRepository.findById(id)
+                .map(userReadMapper::map);
     }
 }

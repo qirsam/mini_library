@@ -5,8 +5,8 @@ import com.qirsam.mini_library.database.entity.library.Genre;
 import com.qirsam.mini_library.dto.BookCreateUpdateDto;
 import com.qirsam.mini_library.integration.IntegrationTestBase;
 import com.qirsam.mini_library.service.BookService;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
@@ -14,12 +14,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@RequiredArgsConstructor
 class BookServiceIT extends IntegrationTestBase {
 
     private static final Integer AUTHOR_1 = 1;
     private static final Long BOOK_1 = 1L;
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
 
     @Test
     void create() {

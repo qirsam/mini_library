@@ -10,6 +10,7 @@ public class MiniLibraryApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MiniLibraryApplication.class, args);
+        System.out.println();
     }
 
 }
