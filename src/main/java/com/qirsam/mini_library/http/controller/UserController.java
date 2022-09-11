@@ -1,6 +1,5 @@
 package com.qirsam.mini_library.http.controller;
 
-import com.qirsam.mini_library.database.entity.user.Role;
 import com.qirsam.mini_library.dto.UserCreateUpdateDto;
 import com.qirsam.mini_library.service.UserBookService;
 import com.qirsam.mini_library.service.UserService;
@@ -50,9 +49,6 @@ public class UserController {
                            Model model,
                            @AuthenticationPrincipal UserDetails userDetails) {
         return userService.findById(id)
-                .filter(user -> user.getUsername().equals(userDetails.getUsername())
-                                || userDetails.getAuthorities().contains(Role.ADMIN)
-                                || userDetails.getAuthorities().contains(Role.MODERATOR))
                 .map(user -> {
                     model.addAttribute("user", user);
                     return "user/user";

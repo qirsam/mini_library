@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "users_book")
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class UserBook extends BaseEntity<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)

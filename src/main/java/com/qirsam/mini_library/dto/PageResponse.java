@@ -10,6 +10,7 @@ public record PageResponse<T>(List<T> content, PageResponse.Metadata metadata) {
         var metadata = new Metadata(page.getNumber(), page.getSize(), page.getTotalElements());
         return new PageResponse<>(page.getContent(), metadata);
     }
+
     public record Metadata(int page, int size, long totalElements) {
     }
 }

@@ -1,11 +1,13 @@
 package com.qirsam.mini_library.service;
 
+import com.qirsam.mini_library.database.entity.user.Role;
 import com.qirsam.mini_library.database.repository.UserRepository;
 import com.qirsam.mini_library.dto.UserCreateUpdateDto;
 import com.qirsam.mini_library.dto.UserReadDto;
 import com.qirsam.mini_library.mapper.UserCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.UserReadMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +27,15 @@ public class UserService implements UserDetailsService {
     private final UserReadMapper userReadMapper;
     private final UserRepository userRepository;
 
+    public Optional<UserReadDto> findById(Long id) {
+        var principal =(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userRepository.findById(id)
+                .map(userReadMapper::map)
+                .filter(user -> user.getUsername().equals(principal.getUsername())
+                                || principal.getAuthorities().contains(Role.ADMIN)
+                                || principal.getAuthorities().contains(Role.MODERATOR));
+    }
+
     @Transactional
     public UserReadDto create(UserCreateUpdateDto userDto) {
         return Optional.of(userDto)
@@ -42,11 +53,6 @@ public class UserService implements UserDetailsService {
                         user.getPassword(),
                         Collections.singleton(user.getRole())
                 ))
-                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user" + username));
-    }
-
-    public Optional<UserReadDto> findById(Long id) {
-        return userRepository.findById(id)
-                .map(userReadMapper::map);
+                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + username));
     }
 }
