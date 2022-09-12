@@ -21,25 +21,26 @@ class UserServiceIT extends IntegrationTestBase {
     private final UserService userService;
     private final UserRepository userRepository;
     private static final Long USER_ID = 1L;
-    private static final String VALID_TEST_USERNAME = "qirsam@mail.com";
-    private static final String INVALID_TEST_USERNAME = "invalidtestusername@mail.com";
+    private static final String VALID_TEST_USERNAME = "qirsam@gmail.com";
+    private static final String INVALID_TEST_USERNAME = "invalidtestusername@gmail.com";
+
+
 
 
     @Test
     void findById() {
-
         var mayBeUser = userService.findById(USER_ID);
 
         assertThat(mayBeUser)
                 .isPresent()
                 .get()
-                .satisfies(user -> assertThat(user.getUsername()).isEqualTo("masha@mail.com"));
+                .satisfies(user -> assertThat(user.getUsername()).isEqualTo("masha@gmail.com"));
     }
 
     @Test
     void create() {
         var userDto = new UserCreateUpdateDto(
-                "test@gmail.com",
+                "test2@gmail.com",
                 "{noop}123",
                 "test",
                 "test",
@@ -49,7 +50,7 @@ class UserServiceIT extends IntegrationTestBase {
         var actualResult = userService.create(userDto);
 
         assertThat(actualResult)
-                .satisfies(user -> assertThat(user.getUsername()).isEqualTo("test@gmail.com"))
+                .satisfies(user -> assertThat(user.getUsername()).isEqualTo("test2@gmail.com"))
                 .satisfies(user -> assertThat(user.getFirstname()).isEqualTo("test"))
                 .satisfies(user -> assertThat(user.getLastname()).isEqualTo("test"))
                 .satisfies(user -> assertThat(user.getRole()).isEqualTo(Role.USER))

@@ -25,21 +25,26 @@ VALUES (1, 'Властелин колец', (SELECT id FROM author WHERE lastnam
 SELECT SETVAL('book_id_seq', (SELECT MAX(id) FROM book));
 
 INSERT INTO users (id, username, password, birth_date, firstname, lastname, role)
-VALUES (1, 'masha@mail.com', '{noop}123', '1997-01-01', 'masha', 'andreeva', 'USER'),
-       (2, 'petya@mail.com', '{noop}123', '1997-01-01', 'petya', 'bunin', 'USER'),
-       (3, 'alya@mail.com', '{noop}123', '1997-01-01', 'alina', 'lazchenko', 'MODERATOR'),
-       (4, 'qirsam@mail.com', '{noop}123', '1997-01-01', 'sergey', 'lazchenko', 'ADMIN');
+VALUES (1, 'masha@gmail.com', '{noop}123', '1997-01-01', 'masha', 'andreeva', 'USER'),
+       (2, 'petya@gmail.com', '{noop}123', '1997-01-01', 'petya', 'bunin', 'USER'),
+       (3, 'alya@gmail.com', '{noop}123', '1997-01-01', 'alina', 'lazchenko', 'MODERATOR'),
+       (4, 'qirsam@gmail.com', '{noop}123', '1997-01-01', 'sergey', 'lazchenko', 'ADMIN'),
+       (5, 'test@gmail.com', '{noop}test', '2000-01-01', 'test', 'test', 'ADMIN');
 
 SELECT SETVAL('users_id_seq', (SELECT MAX(id) FROM users));
 
 INSERT INTO users_book (id, user_id, book_id, status)
-VALUES (1, (SELECT id FROM users WHERE username = 'qirsam@mail.com'),
+VALUES (1, (SELECT id FROM users WHERE username = 'qirsam@gmail.com'),
         (SELECT id FROM book WHERE title = 'Наемник Его Величества'), 'COMPLETED'),
-       (2, (SELECT id FROM users WHERE username = 'qirsam@mail.com'), (SELECT id FROM book WHERE title = 'Страж'),
+       (2, (SELECT id FROM users WHERE username = 'qirsam@gmail.com'), (SELECT id FROM book WHERE title = 'Страж'),
         'COMPLETED'),
-       (3, (SELECT id FROM users WHERE username = 'alya@mail.com'),
-        (SELECT id FROM book WHERE title = 'Хоббит, или Туда и обратно'), 'COMPLETED'),
-       (4, (SELECT id FROM users WHERE username = 'alya@mail.com'),
-        (SELECT id FROM book WHERE title = 'Властелин колец'), 'READING');
+       (3, (SELECT id FROM users WHERE username = 'alya@gmail.com'),
+        (SELECT id FROM book WHERE title = 'Крадущийся в тени'), 'READING'),
+       (4, (SELECT id FROM users WHERE username = 'test@gmail.com'),
+        (SELECT id FROM book WHERE title = 'Крадущийся в тени'), 'READING'),
+       (5, (SELECT id FROM users WHERE username = 'test@gmail.com'),
+        (SELECT id FROM book WHERE title = 'Властелин колец'), 'READING'),
+       (6, (SELECT id FROM users WHERE username = 'alya@gmail.com'),
+        (SELECT id FROM book WHERE title = 'Хоббит, или Туда и обратно'), 'COMPLETED');
 
-SELECT SETVAL('users_id_seq', (SELECT MAX(id) FROM users_book));
+SELECT SETVAL('users_book_id_seq', (SELECT MAX(id) FROM users_book));

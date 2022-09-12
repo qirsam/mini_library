@@ -43,7 +43,7 @@ public class User extends BaseEntity<Long> implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(this.role);
+        return Collections.singleton(role);
     }
 
     @Override
@@ -63,6 +63,6 @@ public class User extends BaseEntity<Long> implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true ;
+        return true;
     }
 }
