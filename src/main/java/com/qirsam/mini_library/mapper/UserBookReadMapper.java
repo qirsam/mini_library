@@ -10,6 +10,7 @@ public class UserBookReadMapper implements Mapper<UserBook, UserBookReadDto> {
     @Override
     public UserBookReadDto map(UserBook object) {
         return new UserBookReadDto(
+                object.getId(),
                 object.getBook(),
                 object.getUser(),
                 object.getStatus()

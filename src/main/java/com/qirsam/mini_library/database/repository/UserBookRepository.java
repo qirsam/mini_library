@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserBookRepository extends
         JpaRepository<UserBook, Long>,
@@ -13,6 +14,9 @@ public interface UserBookRepository extends
 
     @EntityGraph(attributePaths = {"book.author.lastname", "book.author.firstname", "book.id", "book.title"})
     List<UserBook> findAllByUserId(Long Id);
+
+    @EntityGraph(attributePaths = {"book", "user"})
+    Optional<UserBook> findByUser_IdAndBook_Id(Long userId, Long bookId);
 
 
 }

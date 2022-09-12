@@ -2,10 +2,12 @@ package com.qirsam.mini_library.http.controller;
 
 import com.qirsam.mini_library.database.entity.filter.BookFilter;
 import com.qirsam.mini_library.database.entity.library.Genre;
+import com.qirsam.mini_library.database.entity.user.Status;
 import com.qirsam.mini_library.dto.BookCreateUpdateDto;
 import com.qirsam.mini_library.dto.PageResponse;
 import com.qirsam.mini_library.service.AuthorService;
 import com.qirsam.mini_library.service.BookService;
+import com.qirsam.mini_library.service.UserBookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -23,17 +25,28 @@ public class BookController {
 
     private final AuthorService authorService;
     private final BookService bookService;
+    private final UserBookService userBookService;
 
     @GetMapping("/{id}")
     public String findById(@PathVariable Long id, Model model) {
         return bookService.findById(id)
                 .map(book -> {
                     model.addAttribute("book", book);
+                    model.addAttribute("statuses", Status.values());
                     model.addAttribute("genres", Genre.values());
                     model.addAttribute("authors", authorService.findAll());
+                    userBookService.findByPrincipalUserIdAndBookId(id)
+                            .map(userBook -> model.addAttribute("userBook", userBook));
 
                     return "book/book";
                 })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping("/{id}/update")
+    public String setStatus(@PathVariable Long id, @ModelAttribute Status status){
+        return userBookService.updateStatus(id, status)
+                .map(it -> "redirect:/books/{id}")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
@@ -68,4 +81,6 @@ public class BookController {
         redirectAttributes.addAttribute("id", bookReadDto.getId());
         return "redirect:/books/{id}";
     }
+
+
 }

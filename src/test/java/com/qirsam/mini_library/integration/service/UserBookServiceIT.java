@@ -31,4 +31,8 @@ class UserBookServiceIT extends IntegrationTestBase {
                     assertThat(userBookReadDto.getStatus()).isEqualTo(Status.COMPLETED);
                 });
     }
+
+    @Test
+    void findByPrincipalUserIdAndBookId() {
+    }
 }

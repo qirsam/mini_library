@@ -7,6 +7,7 @@ import lombok.Value;
 
 @Value
 public class UserBookReadDto {
+    Long id;
     Book book;
     User user;
     Status status;

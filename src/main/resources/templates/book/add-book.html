@@ -26,7 +26,7 @@
                 <option th:each="genre : ${genres}"
                         th:value="${genre}"
                         th:selected="${genre == book.genre}"
-                        th:text="${genre}">Жанр
+                        th:text="${genre.value}">Жанр
                 </option>
             </select>
         </label>
