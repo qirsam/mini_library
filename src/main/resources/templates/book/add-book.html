@@ -38,6 +38,9 @@
     </div>
     <button type="submit">Создать книгу</button>
 </form>
+<div th:if="${errors}">
+    <p th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+</div>
 
 </body>
 </html>

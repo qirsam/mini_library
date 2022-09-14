@@ -11,4 +11,4 @@ CREATE TABLE IF NOT EXISTS users
     lastname   VARCHAR(64),
     role       VARCHAR(32)
 );
---rollback DROP TABLE author;
+--rollback DROP TABLE users;

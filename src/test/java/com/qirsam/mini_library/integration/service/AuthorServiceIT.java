@@ -11,11 +11,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RequiredArgsConstructor
 class AuthorServiceIT extends IntegrationTestBase {
 
-        private final AuthorService authorService;
+    private final AuthorService authorService;
 
     @Test
     void findAll() {
         var result = authorService.findAll();
-        assertThat(result.get(0).getLastname()).isEqualTo("Толкин");
+        assertThat(result.get(0).getLastname()).isEqualTo("Зыков");
     }
 }

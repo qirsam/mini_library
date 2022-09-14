@@ -16,7 +16,7 @@ public class AuthorService {
     private final AuthorReadMapper authorReadMapper;
 
     public List<AuthorReadDto> findAll() {
-        return authorRepository.findAll().stream()
+        return authorRepository.findAllByOrderByLastnameAsc().stream()
                 .map(authorReadMapper::map)
                 .toList();
     }
