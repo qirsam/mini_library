@@ -9,5 +9,8 @@
 <b th:text="${author.firstname}">Имя</b><br>
 <time th:text="${#temporals.format(author.birthDate, 'dd-MM-yyyy')}">День рождения</time>
 <article th:text="${author.description}">Описание</article>
+<div th:if="${errors}">
+    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+</div>
 </body>
 </html>
