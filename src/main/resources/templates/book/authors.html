@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список авторов</title>
+</head>
+<body>
+<form action="/authors">
+<!--    <div>-->
+<!--        <label for="title">Название книги-->
+<!--            <input id="title" type="text" name="title" th:value="${filter.title()}">-->
+<!--        </label>-->
+<!--        <label for="authorLastname">Фамилия автора-->
+<!--            <input id="authorLastname" type="text" name="authorLastname" th:value="${filter.authorLastname()}">-->
+<!--        </label>-->
+<!--        <label for="genre">-->
+<!--            <select id="genre" name="genre" th:value="${genres}">-->
+<!--                <option th:each="genre : ${genres}"-->
+<!--                        th:value="${genre}"-->
+<!--                        th:selected="${genre == filter.genre}"-->
+<!--                        th:text="${genre.value}">Жанр-->
+<!--                </option>-->
+<!--            </select>-->
+<!--        </label>-->
+<!--    </div>-->
+<!--    <button type="submit">Filter</button>-->
+    <!--    todo:add Page-->
+</form>
+<div th:each="author : ${authors}">
+    <a th:href="@{'/authors/' + ${author.id}}" th:text="|${author.lastname} ${author.firstname}|">Автор:</a>
+</div>
+</body>
+</html>

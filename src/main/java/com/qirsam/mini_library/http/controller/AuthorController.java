@@ -29,6 +29,12 @@ public class AuthorController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping()
+    public String findAll(Model model){
+        model.addAttribute("authors", authorService.findAll());
+        return "book/authors";
+    }
+
     @GetMapping("/add-author")
     public String addAuthor(Model model, @ModelAttribute AuthorCreateUpdateDto author) {
         model.addAttribute("author", author);

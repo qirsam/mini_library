@@ -31,6 +31,16 @@ class AuthorControllerIT extends IntegrationTestBase {
     }
 
     @Test
+    void findAll() throws Exception {
+        mockMvc.perform(get("/authors"))
+                .andExpectAll(
+                        status().is2xxSuccessful(),
+                        model().attributeExists("authors"),
+                        view().name("book/authors")
+                );
+    }
+
+    @Test
     void addAuthor() throws Exception {
         mockMvc.perform(get("/authors/add-author"))
                 .andExpectAll(
