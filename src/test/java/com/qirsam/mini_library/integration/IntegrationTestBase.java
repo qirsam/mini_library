@@ -23,11 +23,13 @@ import java.util.List;
 })
 public abstract class IntegrationTestBase {
 
+    protected static final Long PRINCIPLE_USER_ID = 5L;
+
     @BeforeEach
     void init() {
         List<GrantedAuthority> roles = List.of(Role.ADMIN, Role.USER);
         var testUser = new User("test@gmail.com", "test", "test", "test", LocalDate.of(2000, 1, 1), Role.ADMIN, new ArrayList<>());
-        testUser.setId(5L);
+        testUser.setId(PRINCIPLE_USER_ID);
         var authenticationToken = new TestingAuthenticationToken(testUser, testUser.getPassword(), roles);
 
         var securityContext = SecurityContextHolder.createEmptyContext();
