@@ -1,17 +1,14 @@
 package com.qirsam.mini_library.http.controller;
 
 import com.qirsam.mini_library.dto.UserCreateUpdateDto;
-import com.qirsam.mini_library.service.UserBookService;
+import com.qirsam.mini_library.service.*;
 import com.qirsam.mini_library.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,8 +44,7 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public String findById(@PathVariable("id") Long id,
-                           Model model,
-                           @AuthenticationPrincipal UserDetails userDetails) {
+                           Model model) {
         return userService.findById(id)
                 .map(user -> {
                     model.addAttribute("user", user);

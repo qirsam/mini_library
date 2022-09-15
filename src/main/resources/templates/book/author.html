@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${author.lastname + ' ' + author.firstname}">Author</title>
+</head>
+<body>
+<b th:text="${author.lastname}">Фамилия</b>
+<b th:text="${author.firstname}">Имя</b><br>
+<time th:text="${#temporals.format(author.birthDate, 'dd-MM-yyyy')}">День рождения</time>
+<article th:text="${author.description}">Описание</article>
+</body>
+</html>
