@@ -16,7 +16,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class AuthorControllerIT extends IntegrationTestBase {
 
+    private static final Integer TEST_AUTHOR_ID = 1;
+
     private final MockMvc mockMvc;
+
+    @Test
+    void findById() throws Exception {
+        mockMvc.perform(get("/authors/" + TEST_AUTHOR_ID))
+                .andExpectAll(
+                        status().is2xxSuccessful(),
+                        model().attributeExists("author"),
+                        view().name("book/author")
+                );
+    }
 
     @Test
     void addAuthor() throws Exception {

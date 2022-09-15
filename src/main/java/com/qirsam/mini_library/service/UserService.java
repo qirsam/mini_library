@@ -27,7 +27,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     public Optional<UserReadDto> findById(Long id) {
-        var principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var principal = getPrincipal();
         return userRepository.findById(id)
                 .map(userReadMapper::map)
                 .filter(user -> user.getUsername().equals(principal.getUsername())
