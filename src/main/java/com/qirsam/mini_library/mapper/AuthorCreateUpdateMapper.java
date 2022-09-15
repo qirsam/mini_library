@@ -16,4 +16,13 @@ public class AuthorCreateUpdateMapper implements  Mapper<AuthorCreateUpdateDto, 
                 object.getDescription()
         );
     }
+
+    @Override
+    public Author map(AuthorCreateUpdateDto fromObject, Author toObject) {
+        toObject.setFirstname(fromObject.getFirstname());
+        toObject.setLastname(fromObject.getLastname());
+        toObject.setBirthDate(fromObject.getBirthDate());
+        toObject.setDescription(fromObject.getDescription());
+        return toObject;
+    }
 }

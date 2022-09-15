@@ -42,7 +42,11 @@ public class BookService {
 
     @Transactional
     public BookReadDto create(BookCreateUpdateDto bookDto) {
-        return Optional.of(bookDto).map(bookCreateUpdateMapper::map).map(bookRepository::save).map(bookReadMapper::map).orElseThrow();
+        return Optional.of(bookDto)
+                .map(bookCreateUpdateMapper::map)
+                .map(bookRepository::save)
+                .map(bookReadMapper::map)
+                .orElseThrow();
     }
 
 }

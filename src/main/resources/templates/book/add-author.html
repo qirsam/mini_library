@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить автора</title>
+</head>
+<body>
+<form th:action="@{/authors/add-author}" enctype="multipart/form-data" method="post" th:object="${author}">
+    <label for="lastname">Фамилия:
+        <input id="lastname" type="text" name="lastname" th:value="*{lastname}">
+    </label><br>
+    <label for="firstname">Имя:
+        <input id="firstname" type="text" name="firstname" th:value="*{firstname}" >
+    </label><br>
+    <label for="birthDate">Дата рождения:
+        <input id="birthDate" type="date" name="birthDate" th:value="*{birthDate}">
+    </label><br>
+
+        <label for="description">Описание:
+            <textarea id="description" name="description" th:value="*{description}"></textarea>
+        </label><br>
+    <button type="submit">Добавить автора</button>
+</form>
+<div th:if="${errors}">
+    <p th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+</div>
+
+</body>
+</html>
