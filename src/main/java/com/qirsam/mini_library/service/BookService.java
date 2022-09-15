@@ -27,11 +27,15 @@ public class BookService {
     private final BookRepository bookRepository;
 
     public Optional<BookReadDto> findById(Long id) {
-        return bookRepository.findById(id).map(bookReadMapper::map);
+        return bookRepository.findById(id)
+                .map(bookReadMapper::map);
     }
 
     public Page<BookReadDto> findAll(BookFilter filter, Pageable pageable) {
-        var predicate = QPredicates.builder().add(filter.title(), book.title::containsIgnoreCase).add(filter.authorLastname(), book.author.lastname::containsIgnoreCase).add(filter.genre(), book.genre::eq).build();
+        var predicate = QPredicates.builder()
+                .add(filter.title(), book.title::containsIgnoreCase)
+                .add(filter.authorLastname(), book.author.lastname::containsIgnoreCase)
+                .add(filter.genre(), book.genre::eq).build();
 
         return bookRepository.findAll(predicate, pageable).map(bookReadMapper::map);
     }

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -19,5 +20,10 @@ public class AuthorService {
         return authorRepository.findAllByOrderByLastnameAsc().stream()
                 .map(authorReadMapper::map)
                 .toList();
+    }
+
+    public Optional<AuthorReadDto> findById(Integer id) {
+        return authorRepository.findById(id)
+                .map(authorReadMapper::map);
     }
 }
