@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -44,7 +45,7 @@ public class BookController {
     }
 
     @PostMapping("/{id}/update")
-    public String setStatus(@PathVariable Long id, @ModelAttribute Status status){
+    public String setStatus(@PathVariable Long id, @ModelAttribute Status status) {
         return userBookService.updateStatus(id, status)
                 .map(it -> "redirect:/books/{id}")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -69,7 +70,7 @@ public class BookController {
     }
 
     @PostMapping("/add-book")
-    public String create(@ModelAttribute BookCreateUpdateDto book,
+    public String create(@ModelAttribute @Validated BookCreateUpdateDto book,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -77,6 +78,7 @@ public class BookController {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/books/add-book";
         }
+
         var bookReadDto = bookService.create(book);
         redirectAttributes.addAttribute("id", bookReadDto.getId());
         return "redirect:/books/{id}";

@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS users_book
     status  VARCHAR(32) NOT NULL,
     UNIQUE (user_id, book_id)
 )
---rollback DROP TABLE author;
+--rollback DROP TABLE users_book;
