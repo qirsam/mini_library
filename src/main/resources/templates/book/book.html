@@ -10,8 +10,10 @@
 <b th:text="${book.author.firstname}">Фамилия автора </b>
 <h2 th:if="${userBook != null}" th:text="${userBook.status}">Статус</h2>
 <div sec:authorize="isAuthenticated()" th:if="${userBook != null}">
-    <form th:action="@{/books/{bookId}/update(bookId=${book.id})}" method="post" th:object="${userBook}">
-        <select id="status" name="status" th:value="${statuses}" onchange="this.form.submit()">
+    <form th:action="@{/books/{bookId}/status(bookId=${book.id})}" method="post" th:object="${userBook}">
+        <label for="status">Статус: </label>
+        <select id="status" name="status" th:value="${statuses}"
+                onchange="this.form.submit()">
             <option th:each="status : ${statuses}"
                     th:value="${status}"
                     th:selected="${status == userBook.status}"
@@ -21,8 +23,10 @@
     </form>
 </div>
 <div sec:authorize="isAuthenticated()" th:if="${userBook == null}">
-    <form th:action="@{/books/{bookId}/update(bookId=${book.id})}" method="post" th:object="${userBook}">
-        <select id="statusNotRead" name="status" th:value="${statuses}" onchange="this.form.submit()">
+    <form th:action="@{/books/{bookId}/status(bookId=${book.id})}" method="post" th:object="${userBook}">
+        <label for="statusNotRead">Статус: </label>
+        <select id="statusNotRead" name="status" th:value="${statuses}"
+                onchange="this.form.submit()">
             <option th:each="status : ${statuses}"
                     th:value="${status}"
                     th:selected="${status == status.NOT_READ}"
@@ -32,5 +36,8 @@
     </form>
 </div>
 <article th:text="${book.description}">Описание книги</article>
+<div sec:authorize="hasAnyAuthority('ADMIN', 'MODERATOR')">
+    <a th:href="@{/books/{bookId}/update(bookId=${book.id})}">Обновить информацию о книге</a>
+</div>
 </body>
 </html>

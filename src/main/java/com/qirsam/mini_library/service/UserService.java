@@ -8,6 +8,7 @@ import com.qirsam.mini_library.dto.UserReadDto;
 import com.qirsam.mini_library.mapper.UserCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.UserReadMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -48,6 +49,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     public Optional<UserReadDto> update(Long id, UserCreateUpdateDto userDto) {
         return userRepository.findById(id)
                 .map(user -> userCreateUpdateMapper.map(userDto, user))
@@ -56,6 +58,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public boolean delete(Long id) {
         return userRepository.findById(id)
                 .map(user -> {

@@ -6,6 +6,7 @@ import com.qirsam.mini_library.dto.AuthorReadDto;
 import com.qirsam.mini_library.mapper.AuthorCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.AuthorReadMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,7 @@ public class AuthorService {
     }
 
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     public Optional<AuthorReadDto> update(Integer id, AuthorCreateUpdateDto authorDto) {
      return authorRepository.findById(id)
              .map(author -> authorCreateUpdateMapper.map(authorDto, author))
@@ -50,6 +52,7 @@ public class AuthorService {
     }
 
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     public boolean delete(Integer id){
         return authorRepository.findById(id)
                 .map(author -> {

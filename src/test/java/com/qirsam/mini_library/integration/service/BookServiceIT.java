@@ -72,4 +72,11 @@ class BookServiceIT extends IntegrationTestBase {
                 .satisfies(book -> assertThat(book.getDescription()).isEqualTo(SILMARILLION.getDescription()));
 
     }
+
+    @Test
+    void delete() {
+        var result = bookService.delete(TEST_BOOK_ID);
+
+        assertThat(result).isEqualTo(true);
+    }
 }

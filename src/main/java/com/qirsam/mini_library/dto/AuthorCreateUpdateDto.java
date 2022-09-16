@@ -1,6 +1,7 @@
 package com.qirsam.mini_library.dto;
 
 import com.qirsam.mini_library.validation.UniqueAuthor;
+import com.qirsam.mini_library.validation.groups.CreateAction;
 import lombok.Value;
 import lombok.experimental.FieldNameConstants;
 
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 
 @Value
 @FieldNameConstants
-@UniqueAuthor
+@UniqueAuthor(groups = CreateAction.class)
 public class AuthorCreateUpdateDto {
 
     @NotEmpty(message = "{com.qirsam.mini_library.validation.notEmpty.firstname}")

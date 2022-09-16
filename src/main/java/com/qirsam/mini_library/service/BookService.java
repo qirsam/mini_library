@@ -10,6 +10,7 @@ import com.qirsam.mini_library.mapper.BookReadMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +51,7 @@ public class BookService {
     }
 
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     public Optional<BookReadDto> update(Long id, BookCreateUpdateDto bookDto) {
         return bookRepository.findById(id)
                 .map(book -> bookCreateUpdateMapper.map(bookDto, book))
@@ -58,6 +60,7 @@ public class BookService {
     }
 
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     public boolean delete(Long id) {
         return bookRepository.findById(id)
                 .map(book -> {
