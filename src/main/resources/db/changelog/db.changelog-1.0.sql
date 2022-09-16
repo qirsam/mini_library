@@ -14,9 +14,9 @@ CREATE TABLE IF NOT EXISTS author
 --changeset qirsam:2
 CREATE TABLE IF NOT EXISTS book
 (
-    id          BIGSERIAL                  NOT NULL PRIMARY KEY,
-    title       VARCHAR(255)               NOT NULL,
-    author_id   INT REFERENCES author (id) NOT NULL,
+    id          BIGSERIAL                                    NOT NULL PRIMARY KEY,
+    title       VARCHAR(255)                                 NOT NULL,
+    author_id   INT REFERENCES author (id) ON DELETE CASCADE NOT NULL,
     genre       VARCHAR(32),
     description text
 );
