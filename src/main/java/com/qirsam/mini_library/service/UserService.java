@@ -39,12 +39,34 @@ public class UserService implements UserDetailsService {
     public UserReadDto create(UserCreateUpdateDto userDto) {
         return Optional.of(userDto)
                 .map(userCreateUpdateMapper::map)
-                .map(userRepository::save)
+                .map(user -> {
+                    user.setRole(Role.USER);
+                    return userRepository.save(user);
+                })
                 .map(userReadMapper::map)
                 .orElseThrow();
     }
 
-    public User getPrincipal(){
+    @Transactional
+    public Optional<UserReadDto> update(Long id, UserCreateUpdateDto userDto) {
+        return userRepository.findById(id)
+                .map(user -> userCreateUpdateMapper.map(userDto, user))
+                .map(userRepository::saveAndFlush)
+                .map(userReadMapper::map);
+    }
+
+    @Transactional
+    public boolean delete(Long id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    userRepository.delete(user);
+                    userRepository.flush();
+                    return true;
+                })
+                .orElse(false);
+    }
+
+    public User getPrincipal() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 

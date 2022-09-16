@@ -9,20 +9,21 @@ public class AuthorCreateUpdateMapper implements  Mapper<AuthorCreateUpdateDto, 
 
     @Override
     public Author map(AuthorCreateUpdateDto object) {
-        return new Author(
-                object.getFirstname(),
-                object.getLastname(),
-                object.getBirthDate(),
-                object.getDescription()
-        );
+        var author = new Author();
+        copy(object, author);
+        return author;
     }
 
     @Override
     public Author map(AuthorCreateUpdateDto fromObject, Author toObject) {
+        copy(fromObject, toObject);
+        return toObject;
+    }
+
+    private void copy(AuthorCreateUpdateDto fromObject, Author toObject) {
         toObject.setFirstname(fromObject.getFirstname());
         toObject.setLastname(fromObject.getLastname());
         toObject.setBirthDate(fromObject.getBirthDate());
         toObject.setDescription(fromObject.getDescription());
-        return toObject;
     }
 }

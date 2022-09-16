@@ -49,4 +49,23 @@ public class BookService {
                 .orElseThrow();
     }
 
+    @Transactional
+    public Optional<BookReadDto> update(Long id, BookCreateUpdateDto bookDto) {
+        return bookRepository.findById(id)
+                .map(book -> bookCreateUpdateMapper.map(bookDto, book))
+                .map(bookRepository::saveAndFlush)
+                .map(bookReadMapper::map);
+    }
+
+    @Transactional
+    public boolean delete(Long id) {
+        return bookRepository.findById(id)
+                .map(book -> {
+                    bookRepository.delete(book);
+                    bookRepository.flush();
+                    return true;
+                })
+                .orElse(false);
+    }
+
 }
