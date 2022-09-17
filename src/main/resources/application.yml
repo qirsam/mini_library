@@ -16,6 +16,13 @@ spring:
   mvc:
     format:
       date: iso
-
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 698821590000-eq767db10mpad01pihei56lkrq4evnp7.apps.googleusercontent.com
+            clientSecret: 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
+            redirectUri: http://localhost:8080/login/oauth2/code/google
 
 
