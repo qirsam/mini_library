@@ -13,12 +13,16 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(urlConfig -> urlConfig
-                .antMatchers("/registration", "login", "books").permitAll());
+                .antMatchers("/registration", "/login").permitAll()
+                .antMatchers("/books", "/books/*", "/authors", "/authors/*").permitAll()
+                .anyRequest().authenticated()
+        );
+
 
         http
                 .formLogin(login -> login
                         .loginPage("/login")
-                                .defaultSuccessUrl("/books"))
+                        .defaultSuccessUrl("/books"))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
