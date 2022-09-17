@@ -18,11 +18,20 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @RequiredArgsConstructor
 class UserServiceIT extends IntegrationTestBase {
 
-    private final UserService userService;
-    private final UserRepository userRepository;
     private static final Long USER_ID = 1L;
     private static final String VALID_TEST_USERNAME = "qirsam@gmail.com";
     private static final String INVALID_TEST_USERNAME = "invalidtestusername@gmail.com";
+
+    private static final UserCreateUpdateDto TEST_USER = new UserCreateUpdateDto(
+            "test2@gmail.com",
+            "{noop}123",
+            "test",
+            "test",
+            LocalDate.now(),
+            null
+    );
+    private final UserService userService;
+    private final UserRepository userRepository;
 
 
 
@@ -39,20 +48,12 @@ class UserServiceIT extends IntegrationTestBase {
 
     @Test
     void create() {
-        var userDto = new UserCreateUpdateDto(
-                "test2@gmail.com",
-                "{noop}123",
-                "test",
-                "test",
-                LocalDate.now(),
-                null
-        );
-        var actualResult = userService.create(userDto);
+        var actualResult = userService.create(TEST_USER);
 
         assertThat(actualResult)
-                .satisfies(user -> assertThat(user.getUsername()).isEqualTo("test2@gmail.com"))
-                .satisfies(user -> assertThat(user.getFirstname()).isEqualTo("test"))
-                .satisfies(user -> assertThat(user.getLastname()).isEqualTo("test"))
+                .satisfies(user -> assertThat(user.getUsername()).isEqualTo(TEST_USER.getUsername()))
+                .satisfies(user -> assertThat(user.getFirstname()).isEqualTo(TEST_USER.getFirstname()))
+                .satisfies(user -> assertThat(user.getLastname()).isEqualTo(TEST_USER.getLastname()))
                 .satisfies(user -> assertThat(user.getRole()).isEqualTo(Role.USER))
                 .satisfies(user -> assertThat(user.getId()).isEqualTo(userRepository.checkMaxUserId()));
     }
@@ -71,5 +72,26 @@ class UserServiceIT extends IntegrationTestBase {
         assertThatThrownBy(() -> userService.loadUserByUsername(INVALID_TEST_USERNAME))
                 .isInstanceOf(UsernameNotFoundException.class)
                 .hasMessageContaining("Failed to retrieve user: " + INVALID_TEST_USERNAME);
+    }
+
+    @Test
+    void update() {
+        var result = userService.update(USER_ID, TEST_USER);
+
+        assertThat(result)
+                .isPresent()
+                .get()
+                .satisfies(user -> assertThat(user.getUsername()).isEqualTo(TEST_USER.getUsername()))
+                .satisfies(user -> assertThat(user.getFirstname()).isEqualTo(TEST_USER.getFirstname()))
+                .satisfies(user -> assertThat(user.getLastname()).isEqualTo(TEST_USER.getLastname()))
+                .satisfies(user -> assertThat(user.getRole()).isEqualTo(TEST_USER.getRole()))
+                .satisfies(user -> assertThat(user.getId()).isEqualTo(USER_ID));
+    }
+
+    @Test
+    void delete() {
+        var result = userService.delete(USER_ID);
+
+        assertThat(result).isEqualTo(true);
     }
 }

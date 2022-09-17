@@ -17,13 +17,21 @@ public class BookCreateUpdateMapper implements Mapper<BookCreateUpdateDto, Book>
     @Override
     public Book map(BookCreateUpdateDto object) {
         var book = new Book();
-
-        book.setTitle(object.getTitle());
-        book.setAuthor(getAuthor(object.getAuthorId()));
-        book.setGenre(object.getGenre());
-        book.setDescription(object.getDescription());
-
+        copy(object, book);
         return book;
+    }
+
+    @Override
+    public Book map(BookCreateUpdateDto fromObject, Book toObject) {
+        copy(fromObject, toObject);
+        return toObject;
+    }
+
+    private void copy(BookCreateUpdateDto formObject, Book toObject) {
+        toObject.setTitle(formObject.getTitle());
+        toObject.setAuthor(getAuthor(formObject.getAuthorId()));
+        toObject.setGenre(formObject.getGenre());
+        toObject.setDescription(formObject.getDescription());
     }
 
     private Author getAuthor(Integer authorId) {

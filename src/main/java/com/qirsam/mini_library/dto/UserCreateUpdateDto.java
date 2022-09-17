@@ -2,6 +2,7 @@ package com.qirsam.mini_library.dto;
 
 import com.qirsam.mini_library.database.entity.user.Role;
 import com.qirsam.mini_library.validation.UniqueEmail;
+import com.qirsam.mini_library.validation.groups.CreateAction;
 import lombok.Value;
 import lombok.experimental.FieldNameConstants;
 
@@ -13,13 +14,13 @@ import java.time.LocalDate;
 
 @Value
 @FieldNameConstants
-@UniqueEmail
+@UniqueEmail(groups = CreateAction.class)
 public class UserCreateUpdateDto {
 
     @Email
     String username;
 
-    @NotEmpty(message = "{com.qirsam.mini_library.validation.notEmpty.password}")
+    @NotEmpty(message = "{com.qirsam.mini_library.validation.notEmpty.password}", groups = CreateAction.class)
     String rawPassword;
 
     @NotEmpty(message = "com.qirsam.mini_library.validation.notEmpty.firstname")

@@ -16,9 +16,8 @@ public class UniqueBookValidator implements ConstraintValidator<UniqueBook, Book
     @Override
     public boolean isValid(BookCreateUpdateDto value, ConstraintValidatorContext context) {
         if (bookRepository.findByTitleAndAuthor_Id(value.getTitle(), value.getAuthorId()).isPresent()) {
-            context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("{com.qirsam.mini_library.validation.unique.book}")
-                    .addPropertyNode("title").addConstraintViolation();
+                    .addConstraintViolation();
             return false;
         }
         return true;

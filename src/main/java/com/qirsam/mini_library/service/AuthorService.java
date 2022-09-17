@@ -1,16 +1,23 @@
 package com.qirsam.mini_library.service;
 
+import com.qirsam.mini_library.database.entity.filter.AuthorFilter;
+import com.qirsam.mini_library.database.querydsl.QPredicates;
 import com.qirsam.mini_library.database.repository.AuthorRepository;
 import com.qirsam.mini_library.dto.AuthorCreateUpdateDto;
 import com.qirsam.mini_library.dto.AuthorReadDto;
 import com.qirsam.mini_library.mapper.AuthorCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.AuthorReadMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.qirsam.mini_library.database.entity.library.QAuthor.author;
 
 @RequiredArgsConstructor
 @Service
@@ -27,6 +34,17 @@ public class AuthorService {
                 .toList();
     }
 
+    public Page<AuthorReadDto> findAll(AuthorFilter filter, Pageable pageable) {
+        var predicate = QPredicates.builder()
+                .add(filter.lastname(), author.lastname::containsIgnoreCase)
+                .add(filter.firstname(), author.firstname::containsIgnoreCase)
+                .build();
+
+        return authorRepository.findAll(predicate, pageable)
+                .map(authorReadMapper::map);
+    }
+
+
     public Optional<AuthorReadDto> findById(Integer id) {
         return authorRepository.findById(id)
                 .map(authorReadMapper::map);
@@ -42,6 +60,7 @@ public class AuthorService {
     }
 
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     public Optional<AuthorReadDto> update(Integer id, AuthorCreateUpdateDto authorDto) {
      return authorRepository.findById(id)
              .map(author -> authorCreateUpdateMapper.map(authorDto, author))
@@ -50,6 +69,7 @@ public class AuthorService {
     }
 
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     public boolean delete(Integer id){
         return authorRepository.findById(id)
                 .map(author -> {

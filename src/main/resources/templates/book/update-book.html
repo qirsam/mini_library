@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${book.title}">Книга</title>
+</head>
+<body>
+<form th:action="@{/books/{bookId}/update(bookId=${book.id})}" enctype="multipart/form-data" method="post"
+      th:object="${book}">
+    <label for="title">Название книги
+        <input id="title" type="text" name="title" th:value="*{title}">
+    </label><br>
+    <div>
+        <label for="author">
+            <select id="author" name="authorId">
+                <option th:each="author : ${authors}"
+                        th:value="${author.id}"
+                        th:selected="${author == book.author}"
+                        th:text="${author.lastname + ' ' + author.firstname}">Автор
+                </option>
+            </select>
+        </label>
+    </div>
+    <div>
+        <label for="genre">
+            <select id="genre" name="genre">
+                <option th:each="genre : ${genres}"
+                        th:value="${genre}"
+                        th:selected="${genre == book.genre}"
+                        th:text="${genre.value}">Жанр
+                </option>
+            </select>
+        </label>
+    </div>
+    <div>
+        <label for="description">Описание:
+            <textarea id="description" name="description" th:text="*{description}"></textarea>
+        </label><br>
+    </div>
+    <button type="submit">Обновить</button>
+</form>
+<form th:action="@{/books/{bookId}/delete(bookId=${book.id})}" method="post">
+    <button type="submit">Удалить</button>
+</form>
+<div th:if="${errors}">
+    <p th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+</div>
+</body>
+</html>

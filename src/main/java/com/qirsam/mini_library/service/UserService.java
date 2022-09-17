@@ -8,6 +8,7 @@ import com.qirsam.mini_library.dto.UserReadDto;
 import com.qirsam.mini_library.mapper.UserCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.UserReadMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,12 +40,42 @@ public class UserService implements UserDetailsService {
     public UserReadDto create(UserCreateUpdateDto userDto) {
         return Optional.of(userDto)
                 .map(userCreateUpdateMapper::map)
-                .map(userRepository::save)
+                .map(user -> {
+                    user.setRole(Role.USER);
+                    return userRepository.save(user);
+                })
                 .map(userReadMapper::map)
                 .orElseThrow();
     }
 
-    public User getPrincipal(){
+    @Transactional
+    public Optional<UserReadDto> update(Long id, UserCreateUpdateDto userDto) {
+        var principal = getPrincipal();
+        return userRepository.findById(id)
+                .filter(user -> user.getUsername().equals(principal.getUsername())
+                                || principal.getAuthorities().contains(Role.ADMIN)
+                                || principal.getAuthorities().contains(Role.MODERATOR))
+                .map(user -> {
+                    user.setPassword(userRepository.findById(id).get().getPassword()); // TODO: 17.09.2022 нормальная смена пароля, костыль
+                    return userCreateUpdateMapper.map(userDto, user);
+                })
+                .map(userRepository::saveAndFlush)
+                .map(userReadMapper::map);
+    }
+
+    @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public boolean delete(Long id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    userRepository.delete(user);
+                    userRepository.flush();
+                    return true;
+                })
+                .orElse(false);
+    }
+
+    public User getPrincipal() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 

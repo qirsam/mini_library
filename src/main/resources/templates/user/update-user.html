@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.lastname + ' ' + user.firstname}">Пользователь</title>
+</head>
+<body>
+<form th:action="@{/users/{userId}/update(userId=${user.id})}" enctype="multipart/form-data" method="post"
+      th:object="${user}">
+    <label for="username">Электронная почта:
+        <input id="username" type="email" name="username" th:value="*{username}">
+    </label><br>
+    <label for="birthDate">День рождения:
+        <input id="birthDate" type="date" name="birthDate" th:value="*{birthDate}">
+    </label><br>
+    <label for="lastname">Фамилия:
+        <input id="lastname" type="text" name="lastname" th:value="*{lastname}">
+    </label><br>
+    <label for="firstname">Имя:
+        <input id="firstname" type="text" name="firstname" th:value="*{firstname}">
+    </label><br>
+    <div sec:authorize="hasAuthority('ADMIN')" th:each="role : ${roles}">
+        <input th:id="${role}" type="radio" name="role" th:value="${role}" th:checked="${role == user.role}">
+        <label th:for="${role}" th:text="${role}">Role name
+        </label>
+    </div>
+    <button type="submit">Обновить</button>
+</form>
+<div sec:authorize="hasAuthority('ADMIN')">
+<form th:action="@{/users/{userId}/delete(userId=${user.id})}" method="post">
+    <button type="submit">Удалить</button>
+</form>
+</div>
+<div th:if="${errors}">
+    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+</div>
+</body>
+</html>

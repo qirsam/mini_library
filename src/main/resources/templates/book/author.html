@@ -9,6 +9,10 @@
 <b th:text="${author.firstname}">Имя</b><br>
 <time th:text="${#temporals.format(author.birthDate, 'dd-MM-yyyy')}">День рождения</time>
 <article th:text="${author.description}">Описание</article>
+<br>
+<div th:each="book : ${books}">
+    <a th:href="@{'/books/' + ${book.id}}" th:text="${book.title}">Книга</a>
+</div>
 <div th:if="${errors}">
     <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
 </div>

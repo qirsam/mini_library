@@ -6,27 +6,17 @@
 </head>
 <body>
 <form action="/authors">
-<!--    <div>-->
-<!--        <label for="title">Название книги-->
-<!--            <input id="title" type="text" name="title" th:value="${filter.title()}">-->
-<!--        </label>-->
-<!--        <label for="authorLastname">Фамилия автора-->
-<!--            <input id="authorLastname" type="text" name="authorLastname" th:value="${filter.authorLastname()}">-->
-<!--        </label>-->
-<!--        <label for="genre">-->
-<!--            <select id="genre" name="genre" th:value="${genres}">-->
-<!--                <option th:each="genre : ${genres}"-->
-<!--                        th:value="${genre}"-->
-<!--                        th:selected="${genre == filter.genre}"-->
-<!--                        th:text="${genre.value}">Жанр-->
-<!--                </option>-->
-<!--            </select>-->
-<!--        </label>-->
-<!--    </div>-->
-<!--    <button type="submit">Filter</button>-->
-    <!--    todo:add Page-->
+    <div>
+        <label for="lastname">Фамилия
+            <input id="lastname" type="text" name="lastname" th:value="${filter.lastname()}">
+        </label>
+        <label for="firstname">Имя
+            <input id="firstname" type="text" name="firstname" th:value="${filter.firstname()}">
+        </label>
+    </div>
+    <button type="submit">Filter</button>
 </form>
-<div th:each="author : ${authors}">
+<div th:each="author : ${authors.content()}">
     <a th:href="@{'/authors/' + ${author.id}}" th:text="|${author.lastname} ${author.firstname}|">Автор:</a>
 </div>
 </body>
