@@ -2,6 +2,7 @@ package com.qirsam.mini_library.integration.http.controller;
 
 import com.qirsam.mini_library.integration.IntegrationTestBase;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
@@ -64,7 +65,7 @@ class UserControllerIT extends IntegrationTestBase {
 
     @Test
     void findById() throws Exception {
-        mockMvc.perform(get("/user/" + PRINCIPLE_USER_ID))
+        mockMvc.perform(get("/users/" + PRINCIPLE_USER_ID))
                 .andExpectAll(
                         status().is2xxSuccessful(),
                         model().attributeExists("user"),
@@ -73,8 +74,9 @@ class UserControllerIT extends IntegrationTestBase {
     }
 
     @Test
+    @Disabled
     void findUserBooks() throws Exception {
-        mockMvc.perform(get("/user/" + PRINCIPLE_USER_ID + "/my_books"))
+        mockMvc.perform(get("/users/" + PRINCIPLE_USER_ID + "/my_books"))
                 .andExpectAll(
                         status().is2xxSuccessful(),
                         model().attributeExists("userBooks"),

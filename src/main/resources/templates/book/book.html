@@ -6,8 +6,7 @@
 </head>
 <body>
 <b th:text="${book.title}">Название книги</b> <br>
-<b th:text="${book.author.lastname} ">Фамилия автора </b>
-<b th:text="${book.author.firstname}">Фамилия автора </b>
+<a th:href="@{/authors/{authorId}(authorId = ${book.author.id})}" th:text="${book.author.lastname + ' ' + book.author.firstname}">Автор</a>
 <h2 th:if="${userBook != null}" th:text="${userBook.status}">Статус</h2>
 <div sec:authorize="isAuthenticated()" th:if="${userBook != null}">
     <form th:action="@{/books/{bookId}/status(bookId=${book.id})}" method="post" th:object="${userBook}">

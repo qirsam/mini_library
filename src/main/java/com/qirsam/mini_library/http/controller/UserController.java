@@ -1,8 +1,11 @@
 package com.qirsam.mini_library.http.controller;
 
+import com.qirsam.mini_library.database.entity.user.Role;
 import com.qirsam.mini_library.dto.UserCreateUpdateDto;
-import com.qirsam.mini_library.service.*;
+import com.qirsam.mini_library.service.UserBookService;
 import com.qirsam.mini_library.service.UserService;
+import com.qirsam.mini_library.validation.groups.CreateAction;
+import com.qirsam.mini_library.validation.groups.UpdateAction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.groups.Default;
+
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -30,8 +35,8 @@ public class UserController {
         return "user/registration";
     }
 
-    @PostMapping("registration")
-    public String create(@ModelAttribute @Validated UserCreateUpdateDto user,
+    @PostMapping("/registration")
+    public String create(@ModelAttribute @Validated({Default.class, CreateAction.class}) UserCreateUpdateDto user,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -43,23 +48,61 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/users/{id}")
     public String findById(@PathVariable("id") Long id,
-                           Model model) {
+                           Model model,
+                           Pageable pageable) {
         return userService.findById(id)
                 .map(user -> {
                     model.addAttribute("user", user);
+                    model.addAttribute("userBooks", userBookService.findByUserId(id, pageable));
                     return "user/user";
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/user/{id}/my_books")
-    public String findUserBooks(@PathVariable("id") Long id,
-                                Model model,
-                                Pageable pageable) {
-        var userBooks = userBookService.findByUserId(id, pageable);
-        model.addAttribute("userBooks", userBooks);
-        return "user/myBooks";
+//    @GetMapping("/users/{id}/my_books")
+//    public String findUserBooks(@PathVariable("id") Long id,
+//                                Model model,
+//                                Pageable pageable) {
+//        var userBooks = userBookService.findByUserId(id, pageable);
+//        model.addAttribute("userBooks", userBooks);
+//        return "user/myBooks";
+//    }
+
+    @GetMapping("/users/{id}/update")
+    public String updateUserPage(@PathVariable Long id, Model model) {
+        return userService.findById(id)
+                .map(user -> {
+                    model.addAttribute("user", user);
+                    model.addAttribute("roles", Role.values());
+                    return "user/update-user";
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
+
+    @PostMapping("users/{id}/update")
+    public String update(@PathVariable Long id,
+                         @ModelAttribute @Validated({Default.class, UpdateAction.class}) UserCreateUpdateDto user,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "redirect:/users/{id}/update";
+        }
+
+        return userService.update(id, user)
+                .map(it -> "redirect:/users/{id}")
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping("/users/{id}/delete")
+    public String delete(@PathVariable Long id){
+        if (!userService.delete(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return "redirect:/admin/users";
+    }
+
 }

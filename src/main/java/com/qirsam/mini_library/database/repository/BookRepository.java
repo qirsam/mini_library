@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -16,5 +17,5 @@ public interface BookRepository extends JpaRepository<Book, Long>, QuerydslPredi
 
     Optional<Book> findByTitleAndAuthor_Id(String title, Integer authorId);
 
-
+    List<Book> findAllByAuthor_Id(Integer authorId);
 }

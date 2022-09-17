@@ -38,11 +38,8 @@ public class BookController {
                 .map(book -> {
                     model.addAttribute("book", book);
                     model.addAttribute("statuses", Status.values());
-                    model.addAttribute("genres", Genre.values());
-                    model.addAttribute("authors", authorService.findAll());
                     userBookService.findByPrincipalUserIdAndBookId(id)
                             .map(userBook -> model.addAttribute("userBook", userBook));
-
                     return "book/book";
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -99,15 +96,16 @@ public class BookController {
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
+
     @PostMapping("/{id}/update")
     public String update(@PathVariable Long id,
                          @ModelAttribute @Validated({Default.class, UpdateAction.class}) BookCreateUpdateDto book,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             redirectAttributes.addAttribute("book", book);
             redirectAttributes.addAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/{id}/update";
+            return "redirect:/books/{id}/update";
         }
 
         return bookService.update(id, book)
@@ -117,7 +115,7 @@ public class BookController {
 
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
-        if (!bookService.delete(id)){
+        if (!bookService.delete(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return "redirect:/books";

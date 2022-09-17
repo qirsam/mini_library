@@ -18,9 +18,10 @@ public class SecurityConfiguration {
         http
                 .formLogin(login -> login
                         .loginPage("/login")
-                        .defaultSuccessUrl("/books"))
+                                .defaultSuccessUrl("/books"))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
                         .deleteCookies("JSESSIONID"));
         return http.build();
     }

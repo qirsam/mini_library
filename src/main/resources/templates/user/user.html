@@ -5,24 +5,15 @@
     <title th:text="${user.lastname + ' ' + user.firstname}">Пользователь</title>
 </head>
 <body>
-<form th:action="@{/users/{userId}/update(userId=${user.id})}" enctype="multipart/form-data" method="post"
-      th:object="${user}">
-    <label for="username">Username:
-        <input id="username" type="text" name="username" th:value="*{username}">
-    </label><br>
-    <label for="birthDate">BirthDate:
-        <input id="birthDate" type="date" name="birthDate" th:value="*{birthDate}">
-    </label><br>
-    <label for="lastname">Lastname:
-        <input id="lastname" type="text" name="lastname" th:value="*{lastname}">
-    </label><br>
-    <label for="firstname">Firstname:
-        <input id="firstname" type="text" name="firstname" th:value="*{firstname}">
-    </label><br>
-    <button type="submit">Update</button>
-</form>
-<!--<form th:action="@{/users/{userId}/delete(userId=${user.id})}" th:if="${user.role.name == 'ADMIN'}" method="post">-->
-<!--    <button type="submit">Remove</button>-->
-<!--</form>-->
+<b th:text="${user.username}">Email</b> <br>
+<b th:text="${user.lastname}">Фамилия </b>
+<b th:text="${user.firstname}">Имя</b> <br>
+<time th:text="${#temporals.format(user.birthDate, 'dd-MM-yyyy')}">День рождения</time>
+<a th:href="@{/users/{userId}/update(userId=${user.id})}">Обновить данные</a>
+<div th:each="userBook : ${userBooks}">
+    <a th:href="@{'/books/' + ${userBook.book.id}}"
+       th:text="|${userBook.getBook().author.lastname} ${userBook.getBook().author.firstname}. ${userBook.getBook().title}|"></a>
+    <a th:text="${userBook.getStatus()}"></a>
+</div>
 </body>
 </html>

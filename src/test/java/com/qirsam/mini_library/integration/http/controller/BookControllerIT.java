@@ -26,7 +26,7 @@ class BookControllerIT extends IntegrationTestBase {
         mockMvc.perform(get("/books/" + TEST_BOOK_ID))
                 .andExpectAll(
                         status().is2xxSuccessful(),
-                        model().attributeExists("book", "statuses", "genres", "authors"),
+                        model().attributeExists("book", "statuses"),
                         view().name("book/book")
                 );
     }

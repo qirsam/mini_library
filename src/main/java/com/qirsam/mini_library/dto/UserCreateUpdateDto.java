@@ -20,7 +20,7 @@ public class UserCreateUpdateDto {
     @Email
     String username;
 
-    @NotEmpty(message = "{com.qirsam.mini_library.validation.notEmpty.password}")
+    @NotEmpty(message = "{com.qirsam.mini_library.validation.notEmpty.password}", groups = CreateAction.class)
     String rawPassword;
 
     @NotEmpty(message = "com.qirsam.mini_library.validation.notEmpty.firstname")

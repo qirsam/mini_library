@@ -49,10 +49,16 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     public Optional<UserReadDto> update(Long id, UserCreateUpdateDto userDto) {
+        var principal = getPrincipal();
         return userRepository.findById(id)
-                .map(user -> userCreateUpdateMapper.map(userDto, user))
+                .filter(user -> user.getUsername().equals(principal.getUsername())
+                                || principal.getAuthorities().contains(Role.ADMIN)
+                                || principal.getAuthorities().contains(Role.MODERATOR))
+                .map(user -> {
+                    user.setPassword(userRepository.findById(id).get().getPassword()); // TODO: 17.09.2022 нормальная смена пароля, костыль
+                    return userCreateUpdateMapper.map(userDto, user);
+                })
                 .map(userRepository::saveAndFlush)
                 .map(userReadMapper::map);
     }
