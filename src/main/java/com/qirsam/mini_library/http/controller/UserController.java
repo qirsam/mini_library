@@ -1,6 +1,8 @@
 package com.qirsam.mini_library.http.controller;
 
+import com.qirsam.mini_library.database.entity.filter.UserFilter;
 import com.qirsam.mini_library.database.entity.user.Role;
+import com.qirsam.mini_library.dto.PageResponse;
 import com.qirsam.mini_library.dto.UserCreateUpdateDto;
 import com.qirsam.mini_library.service.UserBookService;
 import com.qirsam.mini_library.service.UserService;
@@ -61,14 +63,14 @@ public class UserController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-//    @GetMapping("/users/{id}/my_books")
-//    public String findUserBooks(@PathVariable("id") Long id,
-//                                Model model,
-//                                Pageable pageable) {
-//        var userBooks = userBookService.findByUserId(id, pageable);
-//        model.addAttribute("userBooks", userBooks);
-//        return "user/myBooks";
-//    }
+    @GetMapping("/users")
+    public String findAll(Model model, UserFilter filter, Pageable pageable) {
+        var page = userService.findAll(filter, pageable);
+        model.addAttribute("users", PageResponse.of(page));
+        model.addAttribute("filter", filter);
+        return "user/users";
+    }
+
 
     @GetMapping("/users/{id}/update")
     public String updateUserPage(@PathVariable Long id, Model model) {

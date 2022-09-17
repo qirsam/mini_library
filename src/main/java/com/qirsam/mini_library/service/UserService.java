@@ -1,13 +1,18 @@
 package com.qirsam.mini_library.service;
 
+import com.qirsam.mini_library.database.entity.filter.UserFilter;
+import com.qirsam.mini_library.database.entity.user.QUser;
 import com.qirsam.mini_library.database.entity.user.Role;
 import com.qirsam.mini_library.database.entity.user.User;
+import com.qirsam.mini_library.database.querydsl.QPredicates;
 import com.qirsam.mini_library.database.repository.UserRepository;
 import com.qirsam.mini_library.dto.UserCreateUpdateDto;
 import com.qirsam.mini_library.dto.UserReadDto;
 import com.qirsam.mini_library.mapper.UserCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.UserReadMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +39,16 @@ public class UserService implements UserDetailsService {
                 .filter(user -> user.getUsername().equals(principal.getUsername())
                                 || principal.getAuthorities().contains(Role.ADMIN)
                                 || principal.getAuthorities().contains(Role.MODERATOR));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
+    public Page<UserReadDto> findAll(UserFilter filter, Pageable pageable) {
+        var predicate = QPredicates.builder()
+                .add(filter.username(), QUser.user.username::containsIgnoreCase)
+                .build();
+
+        return userRepository.findAll(predicate, pageable)
+                .map(userReadMapper::map);
     }
 
     @Transactional
@@ -64,7 +79,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public boolean delete(Long id) {
         return userRepository.findById(id)
                 .map(user -> {
