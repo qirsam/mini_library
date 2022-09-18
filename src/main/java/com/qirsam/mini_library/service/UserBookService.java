@@ -1,6 +1,7 @@
 package com.qirsam.mini_library.service;
 
 import com.qirsam.mini_library.database.entity.user.Status;
+import com.qirsam.mini_library.database.entity.user.User;
 import com.qirsam.mini_library.database.entity.user.UserBook;
 import com.qirsam.mini_library.database.repository.BookRepository;
 import com.qirsam.mini_library.database.repository.UserBookRepository;
@@ -48,7 +49,7 @@ public class UserBookService {
             return Optional.empty();
         } else {
             var principal = userService.getPrincipal();
-            return userBookRepository.findByUser_IdAndBook_Id(principal.getId(), bookId);
+            return userBookRepository.findByUser_UsernameAndAndBook_Id(principal.getUsername(), bookId);
         }
     }
 
@@ -62,7 +63,7 @@ public class UserBookService {
 
     @Transactional
     public Optional<UserBookReadDto> updateStatus(Long bookId, Status status) {
-        var principal = userService.getPrincipal();
+        var thisUser = (User) userService.loadUserByUsername(userService.getPrincipal().getUsername());
         var book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -73,6 +74,9 @@ public class UserBookService {
                 })
                 .map(userBookRepository::saveAndFlush)
                 .map(userBookReadMapper::map)
-                .orElseGet(() -> create(new UserBook(principal, book, status))));
+                .orElseGet(() -> create(new UserBook(
+                        thisUser,
+                        book,
+                        status))));
     }
 }

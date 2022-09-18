@@ -10,6 +10,7 @@ import com.qirsam.mini_library.dto.UserCreateUpdateDto;
 import com.qirsam.mini_library.dto.UserReadDto;
 import com.qirsam.mini_library.mapper.UserCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.UserReadMapper;
+import liquibase.repackaged.org.apache.commons.lang3.RandomStringUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +19,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -31,6 +36,7 @@ public class UserService implements UserDetailsService {
     private final UserCreateUpdateMapper userCreateUpdateMapper;
     private final UserReadMapper userReadMapper;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Optional<UserReadDto> findById(Long id) {
         var principal = getPrincipal();
@@ -90,8 +96,8 @@ public class UserService implements UserDetailsService {
                 .orElse(false);
     }
 
-    public User getPrincipal() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public UserDetails getPrincipal() {
+        return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @Override
@@ -100,4 +106,17 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + username));
     }
 
+    @Transactional
+    public UserDetails createO2AuthUser(OidcIdToken idToken) {
+        var o2AuthUser = new User(
+                idToken.getEmail(),
+                passwordEncoder.encode(RandomStringUtils.random(10, true, true)),
+                idToken.getGivenName(),
+                idToken.getFamilyName(),
+                LocalDate.of(2000, 1, 1),
+                Role.USER,
+                Collections.emptyList()
+        );
+        return userRepository.saveAndFlush(o2AuthUser);
+    }
 }

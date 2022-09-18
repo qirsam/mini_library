@@ -16,7 +16,7 @@ public interface UserBookRepository extends
     List<UserBook> findAllByUserId(Long Id);
 
     @EntityGraph(attributePaths = {"book", "user"})
-    Optional<UserBook> findByUser_IdAndBook_Id(Long userId, Long bookId);
+    Optional<UserBook> findByUser_UsernameAndAndBook_Id(String username, Long bookId);
 
 
 }

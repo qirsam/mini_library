@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -26,7 +27,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(urlConfig -> urlConfig
-                .antMatchers("/registration", "/login").permitAll()
+                .antMatchers("/registration", "/login", "/").permitAll()
                 .antMatchers("/books", "/books/*", "/authors", "/authors/*").permitAll()
                 .anyRequest().authenticated()
         );
@@ -51,10 +52,17 @@ public class SecurityConfiguration {
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
         return userRequest -> {
             String username = userRequest.getIdToken().getClaim("email");
-            var userDetails = userService.loadUserByUsername(username);
+            UserDetails userDetails;
+            try {
+                userService.loadUserByUsername(username);
+            } catch (UsernameNotFoundException ex) {
+                userService.createO2AuthUser(userRequest.getIdToken());
+            } finally {
+                userDetails = userService.loadUserByUsername(username);
+            }
             var oidcUser = new DefaultOidcUser(userDetails.getAuthorities(), userRequest.getIdToken());
 
-            var userDetailsMethods = Set.of(userDetails.getClass().getMethods());
+            var userDetailsMethods = Set.of(UserDetails.class.getMethods());
             return (OidcUser) Proxy.newProxyInstance(SecurityConfiguration.class.getClassLoader(),
                     new Class[]{UserDetails.class, OidcUser.class},
                     (proxy, method, args) -> userDetailsMethods.contains(method)

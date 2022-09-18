@@ -7,8 +7,7 @@
 <body>
 <b th:text="${book.title}">Название книги</b> <br>
 <a th:href="@{/authors/{authorId}(authorId = ${book.author.id})}" th:text="${book.author.lastname + ' ' + book.author.firstname}">Автор</a>
-<h2 th:if="${userBook != null}" th:text="${userBook.status}">Статус</h2>
-<div sec:authorize="isAuthenticated()" th:if="${userBook != null}">
+<div  th:if="${userBook != null}">
     <form th:action="@{/books/{bookId}/status(bookId=${book.id})}" method="post" th:object="${userBook}">
         <label for="status">Статус: </label>
         <select id="status" name="status" th:value="${statuses}"
@@ -21,7 +20,7 @@
         </select>
     </form>
 </div>
-<div sec:authorize="isAuthenticated()" th:if="${userBook == null}">
+<div  th:if="${userBook == null}">
     <form th:action="@{/books/{bookId}/status(bookId=${book.id})}" method="post" th:object="${userBook}">
         <label for="statusNotRead">Статус: </label>
         <select id="statusNotRead" name="status" th:value="${statuses}"
