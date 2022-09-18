@@ -2,6 +2,7 @@ package com.qirsam.mini_library.http.controller;
 
 import com.qirsam.mini_library.database.entity.filter.UserFilter;
 import com.qirsam.mini_library.database.entity.user.Role;
+import com.qirsam.mini_library.database.entity.user.User;
 import com.qirsam.mini_library.dto.PageResponse;
 import com.qirsam.mini_library.dto.UserCreateUpdateDto;
 import com.qirsam.mini_library.service.UserBookService;
@@ -105,6 +106,13 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return "redirect:/admin/users";
+    }
+
+    @GetMapping("/users/i-am")
+    public String redirectToUserPage() {
+        var principal = (User) userService.loadUserByUsername(userService.getPrincipal().getUsername());
+        var id = principal.getId();
+        return "redirect:/users/" + id;
     }
 
 }

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Список книг</title>
 </head>
 <body>
+<div th:insert="~{fragment :: header}"></div>
 <form action="/books">
     <div>
         <label for="title">Название книги
@@ -25,6 +26,9 @@
     </div>
     <button type="submit">Filter</button>
 </form>
+<div sec:authorize="hasAnyAuthority('ADMIN', 'MODERATOR')">
+    <a href="/books/add-book">Добавить книги</a>
+</div>
 <div th:each="book : ${books.content()}">
     <a th:href="@{'/books/' + ${book.id}}" th:text="|${book.author.lastname} ${book.author.firstname}. ${book.title}|">Книга</a>
 </div>
