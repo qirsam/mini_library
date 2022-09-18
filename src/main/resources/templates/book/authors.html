@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Список авторов</title>
@@ -16,6 +16,9 @@
     </div>
     <button type="submit">Filter</button>
 </form>
+<div sec:authorize="hasAnyAuthority('ADMIN', 'MODERATOR')">
+    <a href="/authors/add-author">Добавить автора</a>
+</div>
 <div th:each="author : ${authors.content()}">
     <a th:href="@{'/authors/' + ${author.id}}" th:text="|${author.lastname} ${author.firstname}|">Автор:</a>
 </div>
