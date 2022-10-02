@@ -2,9 +2,9 @@ spring:
   application:
     name: mini_library
   datasource:
-    username: qirsam_admin
-    password: mini_library_password
-    url: jdbc:postgresql://localhost:5433/library_db
+    username: qirsam
+    password: amidamaru
+    url: jdbc:postgresql://localhost:5432/library_db
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:
@@ -23,6 +23,6 @@ spring:
           google:
             clientId: 698821590000-eq767db10mpad01pihei56lkrq4evnp7.apps.googleusercontent.com
             clientSecret: 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
-            redirectUri: http://localhost:8080/login/oauth2/code/google
+            redirectUri: http://www.qirsam.com/login/oauth2/code/google
 server:
   port: 8080

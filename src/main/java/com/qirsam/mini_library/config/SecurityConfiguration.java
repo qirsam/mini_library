@@ -28,6 +28,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(urlConfig -> urlConfig
                 .antMatchers("/registration", "/login", "/").permitAll()
+                .antMatchers( "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                 .antMatchers("/books", "/books/*", "/authors", "/authors/*").permitAll()
                 .anyRequest().authenticated()
         );

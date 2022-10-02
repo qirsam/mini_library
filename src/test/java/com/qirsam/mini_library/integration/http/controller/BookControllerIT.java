@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RequiredArgsConstructor
 @AutoConfigureMockMvc
-class BookControllerIT extends IntegrationTestBase {
+class gBookControllerIT extends IntegrationTestBase {
 
     private static final Long TEST_BOOK_ID = 1L;
     private final MockMvc mockMvc;
