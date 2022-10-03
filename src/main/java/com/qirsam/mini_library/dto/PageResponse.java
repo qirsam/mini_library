@@ -7,10 +7,10 @@ import java.util.List;
 public record PageResponse<T>(List<T> content, PageResponse.Metadata metadata) {
 
     public static <T> PageResponse<T> of(Page<T> page) {
-        var metadata = new Metadata(page.getNumber(), page.getSize(), page.getTotalElements());
+        var metadata = new Metadata(page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages());
         return new PageResponse<>(page.getContent(), metadata);
     }
 
-    public record Metadata(int page, int size, long totalElements) {
+    public record Metadata(int page, int size, long totalElements, int totalPages) {
     }
 }

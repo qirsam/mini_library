@@ -11,7 +11,6 @@ import com.qirsam.mini_library.service.UserBookService;
 import com.qirsam.mini_library.validation.groups.CreateAction;
 import com.qirsam.mini_library.validation.groups.UpdateAction;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,9 +52,20 @@ public class BookController {
     }
 
     @GetMapping
-    public String findAll(Model model, BookFilter filter, Pageable pageable) {
-        var page = bookService.findAll(filter, pageable);
-        model.addAttribute("books", PageResponse.of(page));
+    public String getAllPage(Model model, BookFilter filter){
+        model.addAttribute("genres", Genre.values());
+        model.addAttribute("filter", filter);
+        return getOnePage(model, 1, filter);
+    }
+
+    @GetMapping("/page/{pageNumber}")
+    public String getOnePage(Model model, @PathVariable("pageNumber") int currentPage, BookFilter filter) {
+        var page = bookService.findAll(filter, currentPage);
+        var pageResponse = PageResponse.of(page);
+        model.addAttribute("books", pageResponse);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPages", pageResponse.metadata().totalPages());
+        model.addAttribute("totalBooks", pageResponse.metadata().totalElements());
         model.addAttribute("genres", Genre.values());
         model.addAttribute("filter", filter);
         return "book/books";

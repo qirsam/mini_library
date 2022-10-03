@@ -32,5 +32,13 @@
 <div th:each="book : ${books.content()}">
     <a th:href="@{'/books/' + ${book.id}}" th:text="|${book.author.lastname} ${book.author.firstname}. ${book.title}|">Книга</a>
 </div>
+<footer style="font-size: large" class="panel-footer">
+    Всего книг: [[${totalBooks}]] : Страница [[${currentPage}]] из [[${totalPages}]]
+    &nbsp; &nbsp; - &nbsp;
+    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+        <a th:href="@{'/books/page/' + ${i}}"  >[[${i}]]</a>
+        &nbsp; &nbsp;
+    </span>
+</footer>
 </body>
 </html>

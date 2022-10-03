@@ -29,8 +29,8 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(urlConfig -> urlConfig
                 .antMatchers("/registration", "/login", "/").permitAll()
                 .antMatchers( "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
-                .antMatchers("/books", "/books/*", "/authors", "/authors/*").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/books", "/books/**", "/authors", "/authors/**").permitAll()
+                .anyRequest().authenticated() //todo Обновление и удаление для админа и модератора
         );
 
 

@@ -9,6 +9,7 @@ import com.qirsam.mini_library.mapper.BookCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.BookReadMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -33,16 +34,20 @@ public class BookService {
                 .map(bookReadMapper::map);
     }
 
-    public Page<BookReadDto> findAll(BookFilter filter, Pageable pageable) {
+    public Page<BookReadDto> findAll(BookFilter filter, int pageNumber) {
         var predicate = QPredicates.builder()
                 .add(filter.title(), book.title::containsIgnoreCase)
                 .add(filter.authorLastname(), book.author.lastname::containsIgnoreCase)
                 .add(filter.genre(), book.genre::eq)
                 .build();
 
+        Pageable pageable = PageRequest.of(pageNumber - 1, 5);
+
         return bookRepository.findAll(predicate, pageable)
                 .map(bookReadMapper::map);
     }
+
+
 
     public List<BookReadDto> findAllByAuthorId(Integer authorId){
         return bookRepository.findAllByAuthor_Id(authorId).stream()
