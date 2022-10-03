@@ -7,7 +7,6 @@ import com.qirsam.mini_library.service.AuthorService;
 import com.qirsam.mini_library.service.BookService;
 import com.qirsam.mini_library.validation.groups.UpdateAction;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +17,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.groups.Default;
+
+import static com.qirsam.mini_library.utility.MainUtilityClass.FIRST_PAGE;
 
 @RequestMapping("/authors")
 @RequiredArgsConstructor
@@ -38,10 +39,20 @@ public class AuthorController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping()
-    public String findAll(Model model, AuthorFilter filter, Pageable pageable) {
-        var page = authorService.findAll(filter, pageable);
-        model.addAttribute("authors", PageResponse.of(page));
+    @GetMapping
+    public String getAllPage(Model model, AuthorFilter filter){
+        model.addAttribute("filter", filter);
+        return getOnePage(model, FIRST_PAGE, filter);
+    }
+
+    @GetMapping("/page/{pageNumber}")
+    public String getOnePage(Model model, @PathVariable("pageNumber") int currentPage, AuthorFilter filter) {
+        var page = authorService.findAll(filter, currentPage);
+        var pageResponse = PageResponse.of(page);
+        model.addAttribute("authors", pageResponse);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPages", pageResponse.metadata().totalPages());
+        model.addAttribute("totalAuthors", pageResponse.metadata().totalElements());
         model.addAttribute("filter", filter);
         return "book/authors";
     }

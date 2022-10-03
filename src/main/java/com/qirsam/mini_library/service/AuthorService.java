@@ -7,9 +7,9 @@ import com.qirsam.mini_library.dto.AuthorCreateUpdateDto;
 import com.qirsam.mini_library.dto.AuthorReadDto;
 import com.qirsam.mini_library.mapper.AuthorCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.AuthorReadMapper;
+import com.qirsam.mini_library.utility.MainUtilityClass;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,13 +34,13 @@ public class AuthorService {
                 .toList();
     }
 
-    public Page<AuthorReadDto> findAll(AuthorFilter filter, Pageable pageable) {
+    public Page<AuthorReadDto> findAll(AuthorFilter filter, int pageNumber) {
         var predicate = QPredicates.builder()
                 .add(filter.lastname(), author.lastname::containsIgnoreCase)
                 .add(filter.firstname(), author.firstname::containsIgnoreCase)
                 .build();
 
-        return authorRepository.findAll(predicate, pageable)
+        return authorRepository.findAll(predicate, MainUtilityClass.defaultPageRequest(pageNumber))
                 .map(authorReadMapper::map);
     }
 

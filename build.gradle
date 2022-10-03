@@ -34,6 +34,8 @@ dependencies {
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     implementation 'org.liquibase:liquibase-core'
     implementation 'com.querydsl:querydsl-jpa'
+    implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
+
 
     annotationProcessor 'com.querydsl:querydsl-apt'
 
