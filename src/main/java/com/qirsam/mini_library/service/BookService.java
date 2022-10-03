@@ -7,10 +7,9 @@ import com.qirsam.mini_library.dto.BookCreateUpdateDto;
 import com.qirsam.mini_library.dto.BookReadDto;
 import com.qirsam.mini_library.mapper.BookCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.BookReadMapper;
+import com.qirsam.mini_library.utility.MainUtilityClass;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +40,8 @@ public class BookService {
                 .add(filter.genre(), book.genre::eq)
                 .build();
 
-        Pageable pageable = PageRequest.of(pageNumber - 1, 5);
 
-        return bookRepository.findAll(predicate, pageable)
+        return bookRepository.findAll(predicate, MainUtilityClass.defaultPageRequest(pageNumber))
                 .map(bookReadMapper::map);
     }
 

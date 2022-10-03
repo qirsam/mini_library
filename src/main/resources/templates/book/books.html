@@ -36,7 +36,7 @@
     Всего книг: [[${totalBooks}]] : Страница [[${currentPage}]] из [[${totalPages}]]
     &nbsp; &nbsp; - &nbsp;
     <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-        <a th:href="@{'/books/page/' + ${i}}"  >[[${i}]]</a>
+        <a th:href="@{'/books/page/' + ${i}}">[[${i}]]</a>
         &nbsp; &nbsp;
     </span>
 </footer>
