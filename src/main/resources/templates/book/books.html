@@ -2,7 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Список книг</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 </head>
 <body>
 <div th:insert="~{fragment :: header}"></div>
@@ -32,13 +36,37 @@
 <div th:each="book : ${books.content()}">
     <a th:href="@{'/books/' + ${book.id}}" th:text="|${book.author.lastname} ${book.author.firstname}. ${book.title}|">Книга</a>
 </div>
-<footer style="font-size: large" class="panel-footer">
-    Всего книг: [[${totalBooks}]] : Страница [[${currentPage}]] из [[${totalPages}]]
-    &nbsp; &nbsp; - &nbsp;
-    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-        <a th:href="@{'/books/page/' + ${i}}">[[${i}]]</a>
-        &nbsp; &nbsp;
-    </span>
+<footer class="panel-footer">
+    <nav aria-label="Page navigation example">
+        Всего книг: [[${totalBooks}]] : Страница [[${currentPage}]] из [[${totalPages}]]
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" th:if="${currentPage > 1}" th:href="@{/books/page/1}">Первая</a>
+                <span class="page-link" th:unless="${currentPage > 1}">Первая</span>
+            </li>
+            <li class="page-item">
+                <a class="page-link" th:if="${currentPage > 1}"
+                   th:href="@{'/books/page/' + ${currentPage - 1}}">&laquo;</a>
+                <span class="page-link" th:unless="${currentPage > 1}">&laquo;</span>
+            </li>
+            <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                <a class="page-link" th:if="${i != currentPage}" th:href="@{'/books/page/' + ${i}}">[[${i}]]</a>
+                <span class="page-link active" th:unless="${i != currentPage}">[[${i}]]</span>
+            </li>
+            <li class="page-item">
+                <a class="page-link" th:if="${currentPage < totalPages}"
+                   th:href="@{'/books/page/' + ${currentPage + 1}}">&raquo;</a>
+                <span class="page-link" th:unless="${currentPage < totalPages}">&raquo;</span>
+            </li>
+            <li class="page-item">
+                <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/books/page/' + ${totalPages}}">Последняя</a>
+                <span class="page-link" th:unless="${currentPage < totalPages}">Последняя</span>
+            </li>
+        </ul>
+    </nav>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
 </body>
 </html>

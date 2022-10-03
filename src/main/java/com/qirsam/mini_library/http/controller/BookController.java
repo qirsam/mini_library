@@ -22,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.groups.Default;
 
+import static com.qirsam.mini_library.utility.MainUtilityClass.FIRST_PAGE;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/books")
@@ -55,7 +57,7 @@ public class BookController {
     public String getAllPage(Model model, BookFilter filter){
         model.addAttribute("genres", Genre.values());
         model.addAttribute("filter", filter);
-        return getOnePage(model, 1, filter);
+        return getOnePage(model, FIRST_PAGE, filter);
     }
 
     @GetMapping("/page/{pageNumber}")

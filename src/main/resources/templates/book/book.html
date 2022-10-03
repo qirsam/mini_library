@@ -2,9 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${book.title}">Title</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 </head>
 <body>
+<div th:insert="~{fragment :: header}"></div>
 <b th:text="${book.title}">Название книги</b> <br>
 <a th:href="@{/authors/{authorId}(authorId = ${book.author.id})}" th:text="${book.author.lastname + ' ' + book.author.firstname}">Автор</a>
 <div  th:if="${userBook != null}">
@@ -37,5 +41,6 @@
 <div sec:authorize="hasAnyAuthority('ADMIN', 'MODERATOR')">
     <a th:href="@{/books/{bookId}/update(bookId=${book.id})}">Обновить информацию о книге</a>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 </body>
 </html>
