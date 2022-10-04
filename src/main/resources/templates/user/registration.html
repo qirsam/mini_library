@@ -5,31 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Регистрация</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 </head>
 <body>
 <div th:insert="~{fragment :: header}"></div>
-<form th:action="@{/registration}" enctype="multipart/form-data" method="post" th:object="${user}">
-    <label for="username">Электронная почта
-        <input id="username" type="email" name="username" th:value="*{getUsername}">
-    </label><br>
-    <label for="rawPassword">Пароль
-        <input id="rawPassword" type="password" name="rawPassword">
-    </label><br>
-    <label for="birthDate">Дата рождения
-        <input id="birthDate" type="date" name="birthDate" th:value="*{birthDate}">
-    </label><br>
-    <label for="firstname">Имя
-        <input id="firstname" type="text" name="firstname" th:value="*{firstname}">
-    </label><br>
-    <label for="lastname">Фамилия
-        <input id="lastname" type="text" name="lastname" th:value="*{lastname}">
-    </label><br>
-    <button type="submit">Зарегистрироваться</button>
-</form>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-5 mt-5">
+            <form th:action="@{/registration}" enctype="multipart/form-data" method="post" th:object="${user}">
+                <div class="form-group">
+                    <label for="username">Электронная почта </label>
+                    <div class="input-group">
+                        <input type="email" class="form-control" id="username" autocomplete="off"
+                               th:value="*{getUsername}" th:field="*{username}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <div class="input-group" id="show_hide_password">
+                        <input type="password" class="form-control" id="password" autocomplete="off"
+                               th:field="*{rawPassword}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lastname">Фамилия</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="lastname" autocomplete="off"
+                               th:value="*{lastname}" th:field="*{lastname}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="firstname">Имя</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="firstname" autocomplete="off"
+                               th:value="*{firstname}" th:field="*{firstname}">
+                    </div>
+                </div>
+                <label for="birthDate">Дата рождения</label>
+                <div class="col-lg-5 col-sm-5">
+                    <input type="date" class="form-control" id="birthDate" th:value="*{birthDate}"
+                           th:field="*{birthDate}">
+                </div>
+                <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+</div>
 <div th:if="${errors}">
     <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+
 </body>
 </html>
