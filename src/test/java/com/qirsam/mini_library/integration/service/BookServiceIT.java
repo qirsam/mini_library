@@ -6,10 +6,7 @@ import com.qirsam.mini_library.integration.IntegrationTestBase;
 import com.qirsam.mini_library.service.BookService;
 import com.qirsam.mini_library.web.dto.BookCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,11 +39,9 @@ class BookServiceIT extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled
     void findAll() {
         var filter = new BookFilter("Властелин", null, null);
-        var pageRequest = PageRequest.of(0, 2, Sort.unsorted());
-        var result = bookService.findAll(filter, pageRequest);
+        var result = bookService.findAll(filter, 1);
         assertThat(result.getTotalElements()).isEqualTo(1);
     }
 

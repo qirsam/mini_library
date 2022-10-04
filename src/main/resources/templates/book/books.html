@@ -18,8 +18,9 @@
         <label for="authorLastname">Фамилия автора
             <input id="authorLastname" type="text" name="authorLastname" th:value="${filter.authorLastname()}">
         </label>
-        <label for="genre">
+        <label for="genre">Жанр
             <select id="genre" name="genre" th:value="${genres}">
+                <option></option>
                 <option th:each="genre : ${genres}"
                         th:value="${genre}"
                         th:selected="${genre == filter.genre}"

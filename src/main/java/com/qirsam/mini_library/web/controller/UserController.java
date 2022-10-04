@@ -120,27 +120,24 @@ public class UserController {
         return "redirect:/users/" + id;
     }
 
-    @GetMapping("/users/{id}/change-password")
-    public String changePasswordPage(@PathVariable Long id,
-                                     Model model) {
+    @GetMapping("/change-password")
+    public String changePasswordPage() {
         return "user/change-password";
     }
 
-    @PostMapping("/users/{id}/change-password")
-    public String changePassword(@PathVariable Long id,
-                                 Model model,
-                                 @ModelAttribute @Valid PasswordDto passwordDto,
+    @PostMapping("/change-password")
+    public String changePassword(@ModelAttribute @Valid PasswordDto passwordDto,
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/users/{id}/change-password";
+            return "redirect:/change-password";
         }
 
         userService.changeUserPassword(passwordDto.getNewPassword());
         redirectAttributes.addFlashAttribute("messages",
                 messageSource.getMessage("auth.message.changePasswordSuc", null, LocaleContextHolder.getLocale()));
-        return "redirect:/users/{id}/change-password";
+        return "redirect:/change-password";
     }
 
 }
