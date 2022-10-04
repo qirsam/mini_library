@@ -1,7 +1,7 @@
 package com.qirsam.mini_library.mapper;
 
 import com.qirsam.mini_library.database.entity.library.Book;
-import com.qirsam.mini_library.dto.BookReadDto;
+import com.qirsam.mini_library.web.dto.BookReadDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

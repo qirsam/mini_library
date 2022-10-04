@@ -1,4 +1,4 @@
-package com.qirsam.mini_library.dto;
+package com.qirsam.mini_library.web.dto;
 
 import org.springframework.data.domain.Page;
 
