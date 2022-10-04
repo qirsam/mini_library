@@ -1,7 +1,7 @@
 package com.qirsam.mini_library.mapper;
 
 import com.qirsam.mini_library.database.entity.library.Author;
-import com.qirsam.mini_library.dto.AuthorReadDto;
+import com.qirsam.mini_library.web.dto.AuthorReadDto;
 import org.springframework.stereotype.Component;
 
 @Component

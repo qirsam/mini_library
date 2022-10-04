@@ -1,8 +1,8 @@
 package com.qirsam.mini_library.validation.impl;
 
 import com.qirsam.mini_library.database.repository.UserRepository;
-import com.qirsam.mini_library.dto.UserCreateUpdateDto;
 import com.qirsam.mini_library.validation.UniqueEmail;
+import com.qirsam.mini_library.web.dto.UserCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
 
 import javax.validation.ConstraintValidator;

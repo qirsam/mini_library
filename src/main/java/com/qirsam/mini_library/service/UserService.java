@@ -6,12 +6,13 @@ import com.qirsam.mini_library.database.entity.user.Role;
 import com.qirsam.mini_library.database.entity.user.User;
 import com.qirsam.mini_library.database.querydsl.QPredicates;
 import com.qirsam.mini_library.database.repository.UserRepository;
-import com.qirsam.mini_library.dto.UserCreateUpdateDto;
-import com.qirsam.mini_library.dto.UserReadDto;
 import com.qirsam.mini_library.mapper.UserCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.UserReadMapper;
+import com.qirsam.mini_library.web.dto.UserCreateUpdateDto;
+import com.qirsam.mini_library.web.dto.UserReadDto;
 import liquibase.repackaged.org.apache.commons.lang3.RandomStringUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,6 +38,7 @@ public class UserService implements UserDetailsService {
     private final UserReadMapper userReadMapper;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MessageSource messageSource;
 
     public Optional<UserReadDto> findById(Long id) {
         var principal = getPrincipal();
@@ -77,12 +79,38 @@ public class UserService implements UserDetailsService {
                                 || principal.getAuthorities().contains(Role.ADMIN)
                                 || principal.getAuthorities().contains(Role.MODERATOR))
                 .map(user -> {
-                    user.setPassword(userRepository.findById(id).get().getPassword()); // TODO: 17.09.2022 нормальная смена пароля, костыль
+                    user.setPassword(getPrincipal().getPassword());
                     return userCreateUpdateMapper.map(userDto, user);
                 })
                 .map(userRepository::saveAndFlush)
                 .map(userReadMapper::map);
     }
+
+    @Transactional
+    public void changeUserPassword(String password) {
+        User user = (User) loadUserByUsername(getPrincipal().getUsername());
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.saveAndFlush(user);
+    }
+
+    public boolean checkIfValidOldPassword(String oldPassword) {
+        String dbPassword = getPrincipal().getPassword();
+        return passwordEncoder.matches(oldPassword, dbPassword);
+    }
+
+
+//    public void updateUserPassword(PasswordDto passwordDto) throws InvalidPasswordException {
+//        String dbPassword = getPrincipal().getPassword();
+//
+//        if (passwordDto.getNewPassword().equals(passwordDto.getRepeatPassword())) {
+//            if (passwordEncoder.matches(passwordDto.getOldPassword(), dbPassword)) {
+//                User user = (User) loadUserByUsername(getPrincipal().getUsername());
+//                changeUserPassword(user, passwordDto.getNewPassword());
+//            } else throw new InvalidPasswordException(Messages.INVALID_OLD_PASSWORD);
+//        } else throw new InvalidPasswordException(Messages.INVALID_REPEAT_PASSWORD);
+//
+//    }
+
 
     @Transactional
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -105,6 +133,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + username));
     }
+
 
     @Transactional
     public UserDetails createO2AuthUser(OidcIdToken idToken) {

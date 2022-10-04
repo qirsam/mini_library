@@ -1,15 +1,15 @@
-package com.qirsam.mini_library.http.controller;
+package com.qirsam.mini_library.web.controller;
 
 import com.qirsam.mini_library.database.entity.filter.BookFilter;
 import com.qirsam.mini_library.database.entity.library.Genre;
 import com.qirsam.mini_library.database.entity.user.Status;
-import com.qirsam.mini_library.dto.BookCreateUpdateDto;
-import com.qirsam.mini_library.dto.PageResponse;
 import com.qirsam.mini_library.service.AuthorService;
 import com.qirsam.mini_library.service.BookService;
 import com.qirsam.mini_library.service.UserBookService;
 import com.qirsam.mini_library.validation.groups.CreateAction;
 import com.qirsam.mini_library.validation.groups.UpdateAction;
+import com.qirsam.mini_library.web.dto.BookCreateUpdateDto;
+import com.qirsam.mini_library.web.dto.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.groups.Default;
 
-import static com.qirsam.mini_library.utility.MainUtilityClass.FIRST_PAGE;
+import static com.qirsam.mini_library.util.MainUtilityClass.FIRST_PAGE;
 
 @Controller
 @RequiredArgsConstructor

@@ -1,7 +1,7 @@
 package com.qirsam.mini_library.mapper;
 
 import com.qirsam.mini_library.database.entity.user.User;
-import com.qirsam.mini_library.dto.UserCreateUpdateDto;
+import com.qirsam.mini_library.web.dto.UserCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

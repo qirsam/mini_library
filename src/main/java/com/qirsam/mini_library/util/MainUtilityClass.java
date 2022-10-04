@@ -1,4 +1,4 @@
-package com.qirsam.mini_library.utility;
+package com.qirsam.mini_library.util;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.data.domain.PageRequest;

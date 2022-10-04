@@ -36,9 +36,10 @@
 <div th:each="book : ${books.content()}">
     <a th:href="@{'/books/' + ${book.id}}" th:text="|${book.author.lastname} ${book.author.firstname}. ${book.title}|">Книга</a>
 </div>
+
 <footer class="panel-footer">
+    Всего книг: [[${totalBooks}]] : Страница [[${currentPage}]] из [[${totalPages}]]
     <nav aria-label="Page navigation example">
-        Всего книг: [[${totalBooks}]] : Страница [[${currentPage}]] из [[${totalPages}]]
         <ul class="pagination justify-content-center">
             <li class="page-item">
                 <a class="page-link" th:if="${currentPage > 1}" th:href="@{/books/page/1}">Первая</a>

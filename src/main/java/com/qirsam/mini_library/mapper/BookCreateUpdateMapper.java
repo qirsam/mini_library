@@ -3,7 +3,7 @@ package com.qirsam.mini_library.mapper;
 import com.qirsam.mini_library.database.entity.library.Author;
 import com.qirsam.mini_library.database.entity.library.Book;
 import com.qirsam.mini_library.database.repository.AuthorRepository;
-import com.qirsam.mini_library.dto.BookCreateUpdateDto;
+import com.qirsam.mini_library.web.dto.BookCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

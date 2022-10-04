@@ -1,4 +1,4 @@
-package com.qirsam.mini_library.dto;
+package com.qirsam.mini_library.web.dto;
 
 import com.qirsam.mini_library.database.entity.user.Role;
 import com.qirsam.mini_library.validation.UniqueEmail;
@@ -23,7 +23,7 @@ public class UserCreateUpdateDto {
     @NotEmpty(message = "{com.qirsam.mini_library.validation.notEmpty.password}", groups = CreateAction.class)
     String rawPassword;
 
-    @NotEmpty(message = "com.qirsam.mini_library.validation.notEmpty.firstname")
+    @NotEmpty(message = "{com.qirsam.mini_library.validation.notEmpty.firstname}")
     String firstname;
 
     @NotEmpty(message = "{com.qirsam.mini_library.validation.notEmpty.lastname}")

@@ -2,9 +2,9 @@ package com.qirsam.mini_library.integration.service;
 
 import com.qirsam.mini_library.database.entity.filter.BookFilter;
 import com.qirsam.mini_library.database.entity.library.Genre;
-import com.qirsam.mini_library.dto.BookCreateUpdateDto;
 import com.qirsam.mini_library.integration.IntegrationTestBase;
 import com.qirsam.mini_library.service.BookService;
+import com.qirsam.mini_library.web.dto.BookCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

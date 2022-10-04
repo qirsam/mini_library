@@ -1,8 +1,8 @@
 package com.qirsam.mini_library.validation.impl;
 
 import com.qirsam.mini_library.database.repository.AuthorRepository;
-import com.qirsam.mini_library.dto.AuthorCreateUpdateDto;
 import com.qirsam.mini_library.validation.UniqueAuthor;
+import com.qirsam.mini_library.web.dto.AuthorCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
 
 import javax.validation.ConstraintValidator;

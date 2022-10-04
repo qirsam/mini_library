@@ -1,8 +1,8 @@
 package com.qirsam.mini_library.integration.service;
 
-import com.qirsam.mini_library.dto.AuthorCreateUpdateDto;
 import com.qirsam.mini_library.integration.IntegrationTestBase;
 import com.qirsam.mini_library.service.AuthorService;
+import com.qirsam.mini_library.web.dto.AuthorCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 

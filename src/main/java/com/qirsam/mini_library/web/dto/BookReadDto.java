@@ -1,4 +1,4 @@
-package com.qirsam.mini_library.dto;
+package com.qirsam.mini_library.web.dto;
 
 import com.qirsam.mini_library.database.entity.library.Genre;
 import lombok.Value;

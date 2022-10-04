@@ -2,9 +2,9 @@ package com.qirsam.mini_library.integration.service;
 
 import com.qirsam.mini_library.database.entity.user.Role;
 import com.qirsam.mini_library.database.repository.UserRepository;
-import com.qirsam.mini_library.dto.UserCreateUpdateDto;
 import com.qirsam.mini_library.integration.IntegrationTestBase;
 import com.qirsam.mini_library.service.UserService;
+import com.qirsam.mini_library.web.dto.UserCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
