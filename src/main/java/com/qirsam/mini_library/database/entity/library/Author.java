@@ -28,4 +28,6 @@ class Author extends BaseEntity<Integer> {
     private LocalDate birthDate;
 
     private String description;
+
+    private String image;
 }

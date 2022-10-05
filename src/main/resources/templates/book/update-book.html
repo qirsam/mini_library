@@ -41,6 +41,9 @@
             <textarea id="description" name="description" th:text="*{description}"></textarea>
         </label><br>
     </div>
+    <label for="image">Картинка:
+        <input type="file" id="image" name="image">
+    </label>
     <button type="submit">Обновить</button>
 </form>
 <form th:action="@{/books/{bookId}/delete(bookId=${book.id})}" method="post">

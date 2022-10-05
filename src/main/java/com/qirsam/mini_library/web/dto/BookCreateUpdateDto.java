@@ -5,6 +5,7 @@ import com.qirsam.mini_library.validation.UniqueBook;
 import com.qirsam.mini_library.validation.groups.CreateAction;
 import lombok.Value;
 import lombok.experimental.FieldNameConstants;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -21,4 +22,6 @@ public class BookCreateUpdateDto {
 
     @NotEmpty(message = "{com.qirsam.mini_library.validation.notEmpty.description}")
     String description;
+
+    MultipartFile image;
 }

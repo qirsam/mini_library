@@ -32,11 +32,19 @@
                     </li>
                 </ul>
             </div>
-            <div class="d-flex justify-content-end" th:if="${#authorization.expression('isAuthenticated()')}">
-                <a class="navbar-brand" th:text="${#authentication.principal.username}"
-                   th:href="@{/users/i-am}">Email</a>
-                <form th:action="@{/logout}" method="post">
-                    <button class="btn btn-outline-success" type="submit">Выход</button>
+
+            <div class="dropdown justify-content-end" th:if="${#authorization.expression('isAuthenticated()')}">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false"
+                        th:text="${#authentication.principal.username}">Email
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" th:href="@{/users/i-am}"> Профиль </a></li>
+                    <li><a class="dropdown-item" th:href="@{/change-password}"> Смена пароля </a></li>
+                    <li><a class="dropdown-item" href="javascript: document.logoutForm.submit()" role="menuitem"> Выход </a></li>
+                </ul>
+                <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                    <input hidden type="submit" value="Sign Out"/>
                 </form>
             </div>
             <div class="d-flex justify-content-end" th:unless="${#authorization.expression('isAuthenticated()')}">

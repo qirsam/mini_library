@@ -6,8 +6,11 @@ import com.qirsam.mini_library.database.repository.AuthorRepository;
 import com.qirsam.mini_library.web.dto.BookCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
+
+import static java.util.function.Predicate.not;
 
 @Component
 @RequiredArgsConstructor
@@ -27,11 +30,15 @@ public class BookCreateUpdateMapper implements Mapper<BookCreateUpdateDto, Book>
         return toObject;
     }
 
-    private void copy(BookCreateUpdateDto formObject, Book toObject) {
-        toObject.setTitle(formObject.getTitle());
-        toObject.setAuthor(getAuthor(formObject.getAuthorId()));
-        toObject.setGenre(formObject.getGenre());
-        toObject.setDescription(formObject.getDescription());
+    private void copy(BookCreateUpdateDto fromObject, Book toObject) {
+        toObject.setTitle(fromObject.getTitle());
+        toObject.setAuthor(getAuthor(fromObject.getAuthorId()));
+        toObject.setGenre(fromObject.getGenre());
+        toObject.setDescription(fromObject.getDescription());
+
+        Optional.ofNullable(fromObject.getImage())
+                .filter(not(MultipartFile::isEmpty))
+                .ifPresent(image -> toObject.setImage(image.getOriginalFilename()));
     }
 
     private Author getAuthor(Integer authorId) {

@@ -31,6 +31,8 @@ public class Book extends BaseEntity<Long> {
     @Column(nullable = false)
     private String description;
 
+    private String image;
+
     @Builder.Default
     @OneToMany(mappedBy = "book")
     private List<UserBook> userBooks = new ArrayList<>();
