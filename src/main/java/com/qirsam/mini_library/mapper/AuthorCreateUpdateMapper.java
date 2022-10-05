@@ -3,6 +3,11 @@ package com.qirsam.mini_library.mapper;
 import com.qirsam.mini_library.database.entity.library.Author;
 import com.qirsam.mini_library.web.dto.AuthorCreateUpdateDto;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
+
+import static java.util.function.Predicate.not;
 
 @Component
 public class AuthorCreateUpdateMapper implements  Mapper<AuthorCreateUpdateDto, Author> {
@@ -25,5 +30,9 @@ public class AuthorCreateUpdateMapper implements  Mapper<AuthorCreateUpdateDto, 
         toObject.setLastname(fromObject.getLastname());
         toObject.setBirthDate(fromObject.getBirthDate());
         toObject.setDescription(fromObject.getDescription());
+
+        Optional.ofNullable(fromObject.getImage())
+                .filter(not(MultipartFile::isEmpty))
+                .ifPresent(image -> toObject.setImage(image.getOriginalFilename()));
     }
 }

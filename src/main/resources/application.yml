@@ -28,3 +28,5 @@ spring:
     basename: messages
 server:
   port: 8080
+
+app.image.bucket : /home/qirsam/IdeaProjects/mini_library/images

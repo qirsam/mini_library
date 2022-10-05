@@ -27,6 +27,7 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
     private final AuthorReadMapper authorReadMapper;
     private final AuthorCreateUpdateMapper authorCreateUpdateMapper;
+    private final ImageService imageService;
 
     public List<AuthorReadDto> findAll() {
         return authorRepository.findAllByOrderByLastnameAsc().stream()
@@ -53,7 +54,10 @@ public class AuthorService {
     @Transactional
     public AuthorReadDto create(AuthorCreateUpdateDto authorDto) {
         return Optional.of(authorDto)
-                .map(authorCreateUpdateMapper::map)
+                .map(dto -> {
+                    imageService.uploadImage(dto.getImage());
+                    return authorCreateUpdateMapper.map(dto);
+                })
                 .map(authorRepository::save)
                 .map(authorReadMapper::map)
                 .orElseThrow();
@@ -63,7 +67,10 @@ public class AuthorService {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     public Optional<AuthorReadDto> update(Integer id, AuthorCreateUpdateDto authorDto) {
      return authorRepository.findById(id)
-             .map(author -> authorCreateUpdateMapper.map(authorDto, author))
+             .map(author -> {
+                 imageService.uploadImage(authorDto.getImage());
+                 return authorCreateUpdateMapper.map(authorDto, author);
+             })
              .map(authorRepository::saveAndFlush)
              .map(authorReadMapper::map);
     }

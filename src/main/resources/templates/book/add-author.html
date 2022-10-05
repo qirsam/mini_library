@@ -23,6 +23,9 @@
         <label for="description">Описание:
             <textarea id="description" name="description" th:value="*{description}"></textarea>
         </label><br>
+    <label for="image">Картинка:
+        <input type="file" id="image" name="image">
+    </label>
     <button type="submit">Добавить автора</button>
 </form>
 <div th:if="${errors}">

@@ -4,6 +4,7 @@ import com.qirsam.mini_library.validation.UniqueAuthor;
 import com.qirsam.mini_library.validation.groups.CreateAction;
 import lombok.Value;
 import lombok.experimental.FieldNameConstants;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -25,4 +26,6 @@ public class AuthorCreateUpdateDto {
 
     @NotEmpty(message = "{com.qirsam.mini_library.validation.notEmpty.description}")
     String description;
+
+    MultipartFile image;
 }

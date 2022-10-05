@@ -1,6 +1,7 @@
 package com.qirsam.mini_library.service;
 
 import com.qirsam.mini_library.database.entity.filter.BookFilter;
+import com.qirsam.mini_library.database.entity.library.Book;
 import com.qirsam.mini_library.database.querydsl.QPredicates;
 import com.qirsam.mini_library.database.repository.BookRepository;
 import com.qirsam.mini_library.mapper.BookCreateUpdateMapper;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,7 @@ public class BookService {
     private final BookCreateUpdateMapper bookCreateUpdateMapper;
     private final BookReadMapper bookReadMapper;
     private final BookRepository bookRepository;
+    private final ImageService imageService;
 
     public Optional<BookReadDto> findById(Long id) {
         return bookRepository.findById(id)
@@ -46,18 +49,26 @@ public class BookService {
     }
 
 
-
     public List<BookReadDto> findAllByAuthorId(Integer authorId){
         return bookRepository.findAllByAuthor_Id(authorId).stream()
                 .map(bookReadMapper::map)
                 .toList();
+    }
 
+    public Optional<byte[]> findCover(Long id) {
+        return bookRepository.findById(id)
+                .map(Book::getImage)
+                .filter(StringUtils::hasText)
+                .flatMap(imageService::getImage);
     }
 
     @Transactional
     public BookReadDto create(BookCreateUpdateDto bookDto) {
         return Optional.of(bookDto)
-                .map(bookCreateUpdateMapper::map)
+                .map(dto -> {
+                    imageService.uploadImage(dto.getImage());
+                    return bookCreateUpdateMapper.map(dto);
+                })
                 .map(bookRepository::save)
                 .map(bookReadMapper::map)
                 .orElseThrow();
@@ -67,7 +78,10 @@ public class BookService {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     public Optional<BookReadDto> update(Long id, BookCreateUpdateDto bookDto) {
         return bookRepository.findById(id)
-                .map(book -> bookCreateUpdateMapper.map(bookDto, book))
+                .map(book -> {
+                    imageService.uploadImage(bookDto.getImage());
+                    return bookCreateUpdateMapper.map(bookDto, book);
+                })
                 .map(bookRepository::saveAndFlush)
                 .map(bookReadMapper::map);
     }

@@ -9,6 +9,12 @@
 </head>
 <body>
 <div th:insert="~{fragment :: header}"></div>
+<div th:unless="${book.image}">
+    <img src="/images/notFound.png" alt="NotFound">
+</div>
+<div th:if="${book.image}">
+    <img th:src="@{/api/v1/books/{bookId}/cover(bookId=${book.id})}" width="270" height="405" alt="Cover Book">
+</div>
 <b th:text="${book.title}">Название книги</b> <br>
 <a th:href="@{/authors/{authorId}(authorId = ${book.author.id})}" th:text="${book.author.lastname + ' ' + book.author.firstname}">Автор</a>
 <div  th:if="${userBook != null}">

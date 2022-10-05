@@ -41,6 +41,9 @@
             <textarea id="description" name="description" th:value="*{description}"></textarea>
         </label><br>
     </div>
+    <label for="image">Картинка:
+        <input type="file" id="image" name="image">
+    </label>
     <button type="submit">Создать книгу</button>
 </form>
 <div th:if="${errors}">
