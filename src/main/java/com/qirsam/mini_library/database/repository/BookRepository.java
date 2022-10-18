@@ -18,4 +18,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, QuerydslPredi
     Optional<Book> findByTitleAndAuthor_Id(String title, Integer authorId);
 
     List<Book> findAllByAuthor_Id(Integer authorId);
+
+    @Query(value = "select last_value from book_id_seq", nativeQuery = true)
+    Long getBookIdSeq();
 }

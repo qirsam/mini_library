@@ -5,6 +5,7 @@ import com.qirsam.mini_library.database.entity.library.Genre;
 import com.qirsam.mini_library.database.entity.user.Status;
 import com.qirsam.mini_library.service.AuthorService;
 import com.qirsam.mini_library.service.BookService;
+import com.qirsam.mini_library.service.ImageService;
 import com.qirsam.mini_library.service.UserBookService;
 import com.qirsam.mini_library.validation.groups.CreateAction;
 import com.qirsam.mini_library.validation.groups.UpdateAction;
@@ -32,6 +33,7 @@ public class BookController {
     private final AuthorService authorService;
     private final BookService bookService;
     private final UserBookService userBookService;
+    private final ImageService imageService;
 
     @GetMapping("/{id}")
     public String findById(@PathVariable Long id, Model model) {
@@ -39,6 +41,7 @@ public class BookController {
                 .map(book -> {
                     model.addAttribute("book", book);
                     model.addAttribute("statuses", Status.values());
+                    model.addAttribute("cover", imageService.getImageLinkFromYandexDisk("book", book.getId() + ".jpg"));
                     userBookService.findByPrincipalUserIdAndBookId(id)
                             .map(userBook -> model.addAttribute("userBook", userBook));
                     return "book/book";

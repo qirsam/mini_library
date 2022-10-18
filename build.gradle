@@ -36,6 +36,7 @@ dependencies {
     implementation 'com.querydsl:querydsl-jpa'
     implementation "org.springdoc:springdoc-openapi-ui:${versions.springdoc}"
     implementation 'org.webjars:bootstrap:5.2.0'
+    implementation 'com.yandex.android:disk-restapi-sdk:1.03'
 
     annotationProcessor 'com.querydsl:querydsl-apt'
 

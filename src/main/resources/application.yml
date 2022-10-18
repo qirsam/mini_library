@@ -26,7 +26,11 @@ spring:
             redirectUri: http://www.qirsam.com/login/oauth2/code/google
   messages:
     basename: messages
+  servlet:
+    multipart:
+      max-file-size: 1000000
+      max-request-size: 1000000
 server:
   port: 8080
-
 app.image.bucket : /home/qirsam/IdeaProjects/mini_library/images
+yandex.disk.token : y0_AgAAAAADZew7AAh5dwAAAADQmSOAoC-FrFeeSgOZ_4US-ED58oFbmig

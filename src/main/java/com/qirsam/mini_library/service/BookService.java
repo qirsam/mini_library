@@ -6,6 +6,7 @@ import com.qirsam.mini_library.database.querydsl.QPredicates;
 import com.qirsam.mini_library.database.repository.BookRepository;
 import com.qirsam.mini_library.mapper.BookCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.BookReadMapper;
+import com.qirsam.mini_library.util.ImageUtil;
 import com.qirsam.mini_library.util.MainUtilityClass;
 import com.qirsam.mini_library.web.dto.BookCreateUpdateDto;
 import com.qirsam.mini_library.web.dto.BookReadDto;
@@ -30,6 +31,7 @@ public class BookService {
     private final BookReadMapper bookReadMapper;
     private final BookRepository bookRepository;
     private final ImageService imageService;
+    private final ImageUtil imageUtil;
 
     public Optional<BookReadDto> findById(Long id) {
         return bookRepository.findById(id)
@@ -66,7 +68,7 @@ public class BookService {
     public BookReadDto create(BookCreateUpdateDto bookDto) {
         return Optional.of(bookDto)
                 .map(dto -> {
-                    imageService.uploadImage(dto.getImage());
+                    imageService.uploadImageYandexDisk(dto.getImage(), "book/", imageUtil.getBookImageFilename());
                     return bookCreateUpdateMapper.map(dto);
                 })
                 .map(bookRepository::save)
@@ -74,12 +76,14 @@ public class BookService {
                 .orElseThrow();
     }
 
+
+
     @Transactional
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     public Optional<BookReadDto> update(Long id, BookCreateUpdateDto bookDto) {
         return bookRepository.findById(id)
                 .map(book -> {
-                    imageService.uploadImage(bookDto.getImage());
+                    imageService.uploadImageYandexDisk(bookDto.getImage(), "book/", book.getId() + ".jpg");
                     return bookCreateUpdateMapper.map(bookDto, book);
                 })
                 .map(bookRepository::saveAndFlush)
