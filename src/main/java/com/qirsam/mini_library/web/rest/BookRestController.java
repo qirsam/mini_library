@@ -21,9 +21,10 @@ public class BookRestController {
     public ResponseEntity<byte[]> findCover(@PathVariable("id") Long id) {
         return bookService.findCover(id)
                 .map(content -> ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_JPEG_VALUE)
                         .contentLength(content.length)
                         .body(content))
                 .orElseGet(ResponseEntity.notFound()::build);
     }
+
 }

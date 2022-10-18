@@ -3,6 +3,7 @@ package com.qirsam.mini_library.mapper;
 import com.qirsam.mini_library.database.entity.library.Author;
 import com.qirsam.mini_library.database.entity.library.Book;
 import com.qirsam.mini_library.database.repository.AuthorRepository;
+import com.qirsam.mini_library.util.ImageUtil;
 import com.qirsam.mini_library.web.dto.BookCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,21 +17,21 @@ import static java.util.function.Predicate.not;
 @RequiredArgsConstructor
 public class BookCreateUpdateMapper implements Mapper<BookCreateUpdateDto, Book> {
     private final AuthorRepository authorRepository;
-
+    private final ImageUtil imageUtil;
     @Override
     public Book map(BookCreateUpdateDto object) {
         var book = new Book();
-        copy(object, book);
+        copy(object, book, imageUtil.getBookImageFilename());
         return book;
     }
 
     @Override
     public Book map(BookCreateUpdateDto fromObject, Book toObject) {
-        copy(fromObject, toObject);
+        copy(fromObject, toObject, toObject.getId() + ".jpg");
         return toObject;
     }
 
-    private void copy(BookCreateUpdateDto fromObject, Book toObject) {
+    private void copy(BookCreateUpdateDto fromObject, Book toObject, String imageFileName) {
         toObject.setTitle(fromObject.getTitle());
         toObject.setAuthor(getAuthor(fromObject.getAuthorId()));
         toObject.setGenre(fromObject.getGenre());
@@ -38,7 +39,7 @@ public class BookCreateUpdateMapper implements Mapper<BookCreateUpdateDto, Book>
 
         Optional.ofNullable(fromObject.getImage())
                 .filter(not(MultipartFile::isEmpty))
-                .ifPresent(image -> toObject.setImage(image.getOriginalFilename()));
+                .ifPresent(image -> toObject.setImage(imageFileName));
     }
 
     private Author getAuthor(Integer authorId) {
