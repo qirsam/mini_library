@@ -1,4 +1,4 @@
-package com.qirsam.mini_library.integration.http.controller;
+package com.qirsam.mini_library.integration.web.controller;
 
 import com.qirsam.mini_library.database.entity.library.Genre;
 import com.qirsam.mini_library.database.entity.user.Status;
@@ -9,13 +9,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RequiredArgsConstructor
 @AutoConfigureMockMvc
-class gBookControllerIT extends IntegrationTestBase {
+class BookControllerIT extends IntegrationTestBase {
 
     private static final Long TEST_BOOK_ID = 1L;
     private final MockMvc mockMvc;
@@ -67,13 +66,14 @@ class gBookControllerIT extends IntegrationTestBase {
 
     @Test
     void create() throws Exception {
-        mockMvc.perform(post("/books/add-book")
-                .param("title", "Сильмариллион")
-                .param("authorId", "1")
-                .param("genre", Genre.FANTASY.name())
-                .param("description", "123")
-                .with(csrf())
-        )
+        mockMvc.perform(multipart("/books/add-book")
+                        .file("image", new byte[0])
+                        .param("title", "Сильмариллион")
+                        .param("authorId", "1")
+                        .param("genre", Genre.FANTASY.name())
+                        .param("description", "123")
+                        .with(csrf())
+                )
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrlPattern("/books/{\\d+}")

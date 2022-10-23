@@ -1,4 +1,4 @@
-package com.qirsam.mini_library.integration.http.controller;
+package com.qirsam.mini_library.integration.web.controller;
 
 import com.qirsam.mini_library.integration.IntegrationTestBase;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static com.qirsam.mini_library.web.dto.AuthorCreateUpdateDto.Fields.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RequiredArgsConstructor
@@ -52,7 +52,8 @@ class AuthorControllerIT extends IntegrationTestBase {
 
     @Test
     void create() throws Exception {
-        mockMvc.perform(post("/authors/add-author")
+        mockMvc.perform(multipart("/authors/add-author")
+                        .file(image, new byte[0])
                         .param(lastname, "Уоллс")
                         .param(firstname, "Крейг")
                         .param(birthDate, "1972-01-10")

@@ -3,8 +3,8 @@ spring:
     name: mini_library
   datasource:
     username: qirsam
-    password: amidamaru
-    url: jdbc:postgresql://localhost:5432/library_db
+    password: local_db_password
+    url: jdbc:postgresql://localhost:5431/library_db
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:

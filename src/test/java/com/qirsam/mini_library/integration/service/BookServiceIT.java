@@ -7,6 +7,7 @@ import com.qirsam.mini_library.service.BookService;
 import com.qirsam.mini_library.web.dto.BookCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,7 +28,7 @@ class BookServiceIT extends IntegrationTestBase {
                     «Сильмариллион» представляет собой сборник мифов и легенд Средиземья, описывающих с точки зрения Валар\040
                     и эльфов историю Арды с момента её сотворения.
                     """,
-            null
+            new MockMultipartFile("test", new byte[0])
     );
     private final BookService bookService;
 

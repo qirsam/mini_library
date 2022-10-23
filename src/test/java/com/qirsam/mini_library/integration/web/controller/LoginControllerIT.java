@@ -1,4 +1,4 @@
-package com.qirsam.mini_library.integration.http.controller;
+package com.qirsam.mini_library.integration.web.controller;
 
 import com.qirsam.mini_library.integration.IntegrationTestBase;
 import lombok.RequiredArgsConstructor;

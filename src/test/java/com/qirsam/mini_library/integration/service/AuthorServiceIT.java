@@ -5,6 +5,7 @@ import com.qirsam.mini_library.service.AuthorService;
 import com.qirsam.mini_library.web.dto.AuthorCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
 
 import java.time.LocalDate;
 
@@ -29,7 +30,9 @@ class AuthorServiceIT extends IntegrationTestBase {
                     журнала C++ Report и первый председатель группы Agile Alliance.\040
                     Автор бестселлеров «Чистый код», «Идеальный программист»,\040
                     «Чистая архитектура» и «Чистый Agile».
-                    """
+                    """,
+            new MockMultipartFile("test", new byte[0])
+
     );
     private final AuthorService authorService;
 
