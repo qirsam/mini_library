@@ -2,3 +2,4 @@ spring:
   datasource:
     username: test
     password: test
+yandex.disk.token : y0_AgAAAAADZew7AAiFYAAAAADSF9mNoZhZIMVNSLqXygiCDhZ-RmLXGlM

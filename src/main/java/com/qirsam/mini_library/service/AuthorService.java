@@ -5,6 +5,7 @@ import com.qirsam.mini_library.database.querydsl.QPredicates;
 import com.qirsam.mini_library.database.repository.AuthorRepository;
 import com.qirsam.mini_library.mapper.AuthorCreateUpdateMapper;
 import com.qirsam.mini_library.mapper.AuthorReadMapper;
+import com.qirsam.mini_library.util.ImageUtil;
 import com.qirsam.mini_library.util.MainUtilityClass;
 import com.qirsam.mini_library.web.dto.AuthorCreateUpdateDto;
 import com.qirsam.mini_library.web.dto.AuthorReadDto;
@@ -28,6 +29,7 @@ public class AuthorService {
     private final AuthorReadMapper authorReadMapper;
     private final AuthorCreateUpdateMapper authorCreateUpdateMapper;
     private final ImageService imageService;
+    private final ImageUtil imageUtil;
 
     public List<AuthorReadDto> findAll() {
         return authorRepository.findAllByOrderByLastnameAsc().stream()
@@ -55,7 +57,7 @@ public class AuthorService {
     public AuthorReadDto create(AuthorCreateUpdateDto authorDto) {
         return Optional.of(authorDto)
                 .map(dto -> {
-                    imageService.uploadImage(dto.getImage());
+                    imageService.uploadImageYandexDisk(dto.getImage(), "author/", imageUtil.getAuthorImageFilename());
                     return authorCreateUpdateMapper.map(dto);
                 })
                 .map(authorRepository::save)
@@ -68,7 +70,7 @@ public class AuthorService {
     public Optional<AuthorReadDto> update(Integer id, AuthorCreateUpdateDto authorDto) {
      return authorRepository.findById(id)
              .map(author -> {
-                 imageService.uploadImage(authorDto.getImage());
+                 imageService.uploadImageYandexDisk(authorDto.getImage(), "author/", author.getId() + ".jpg");
                  return authorCreateUpdateMapper.map(authorDto, author);
              })
              .map(authorRepository::saveAndFlush)

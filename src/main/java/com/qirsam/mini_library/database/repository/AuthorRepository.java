@@ -2,6 +2,7 @@ package com.qirsam.mini_library.database.repository;
 
 import com.qirsam.mini_library.database.entity.library.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.time.LocalDate;
@@ -13,4 +14,7 @@ public interface AuthorRepository extends JpaRepository<Author, Integer>, Queryd
     List<Author> findAllByOrderByLastnameAsc();
 
     Optional<Author> findByFirstnameAndLastnameAndBirthDate(String firstname, String lastname, LocalDate birthDate);
+
+    @Query(value = "select last_value from author_id_seq", nativeQuery = true)
+    Integer getAuthorIdSeq();
 }
