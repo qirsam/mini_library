@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import static java.nio.file.StandardOpenOption.CREATE;
@@ -31,19 +32,20 @@ public class ImageService {
 
 
     @SneakyThrows
-    public void upload(String imagePath, InputStream content) {
-        var fullImagePath = Path.of(bucket, imagePath);
+    public Path uploadToDisk(String imageName, InputStream content) {
+        var fullImagePath = Path.of(bucket, imageName);
         try (content) {
             Files.createDirectories(fullImagePath.getParent());
-            Files.write(fullImagePath, content.readAllBytes(), CREATE, TRUNCATE_EXISTING);
+            return Files.write(fullImagePath, content.readAllBytes(), CREATE, TRUNCATE_EXISTING);
         }
     }
 
     @SneakyThrows
-    public void uploadImage(MultipartFile image) {
+    public Path uploadImageToDisk(MultipartFile image) {
         if (!image.isEmpty()) {
-            upload(image.getOriginalFilename(), image.getInputStream());
-        }
+            return uploadToDisk(image.getOriginalFilename(), image.getInputStream());
+        } else
+            return Paths.get("");
     }
 
     @SneakyThrows

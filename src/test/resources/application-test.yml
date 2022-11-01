@@ -3,3 +3,4 @@ spring:
     username: test
     password: test
 yandex.disk.token : y0_AgAAAAADZew7AAiFYAAAAADSF9mNoZhZIMVNSLqXygiCDhZ-RmLXGlM
+app.image.bucket : /home/qirsam/IdeaProjects/mini_library/src/test/resources/images
