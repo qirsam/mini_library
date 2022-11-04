@@ -110,7 +110,7 @@ public class UserController {
         if (!userService.delete(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return "redirect:/admin/users";
+        return "redirect:/users";
     }
 
     @GetMapping("/users/i-am")

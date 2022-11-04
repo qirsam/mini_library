@@ -34,3 +34,7 @@ server:
   port: 8080
 app.image.bucket : /home/qirsam/IdeaProjects/mini_library/images
 yandex.disk.token : y0_AgAAAAADZew7AAh5dwAAAADQmSOAoC-FrFeeSgOZ_4US-ED58oFbmig
+logging:
+  file:
+    path: /home/qirsam/Документы/logs/mini-library
+    name: /home/qirsam/Документы/logs/mini-library/mini-library.log
