@@ -83,7 +83,7 @@ public class AuthorController {
         return authorService.findById(id)
                 .map(author -> {
                     model.addAttribute("author", author);
-                    return "book/update-book";
+                    return "book/update-author";
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
