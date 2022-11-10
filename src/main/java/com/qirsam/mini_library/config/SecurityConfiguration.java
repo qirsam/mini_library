@@ -1,5 +1,6 @@
 package com.qirsam.mini_library.config;
 
+import com.qirsam.mini_library.database.entity.user.Role;
 import com.qirsam.mini_library.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,9 +28,10 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(urlConfig -> urlConfig
+                .antMatchers("/books/add-book").hasAnyAuthority(Role.MODERATOR.getAuthority(), Role.ADMIN.getAuthority())
                 .antMatchers("/registration", "/login", "/", "/api/v1/**", "/images/**").permitAll()
                 .antMatchers( "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
-                .antMatchers("/books", "/books/**", "/authors", "/authors/**").permitAll()
+                .antMatchers("/books", "/books/{\\d+}", "/authors", "/authors/{\\d+}").permitAll()
                 .anyRequest().authenticated() //todo Обновление и удаление для админа и модератора
         );
 

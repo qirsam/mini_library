@@ -1,9 +1,9 @@
 package com.qirsam.mini_library.database.entity.library;
 
 public enum Genre {
-    BIOGRAPHYAUTOBIOGRAPHY("Автобиография"),
     ANTHOLOGY("Антология"),
     FABLE("Басня"),
+    BIOGRAPHY("Биография"),
     DRAMA("Драма"),
     PERIODICALS("Журналы"),
     HISTORICALFICTION("Историческая фантастика"),

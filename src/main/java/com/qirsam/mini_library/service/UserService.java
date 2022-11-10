@@ -38,7 +38,7 @@ public class UserService implements UserDetailsService {
     private final UserReadMapper userReadMapper;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final MessageSource messageSource;
+//    private final MessageSource messageSource;
 
     public Optional<UserReadDto> findById(Long id) {
         var principal = getPrincipal();
@@ -63,10 +63,7 @@ public class UserService implements UserDetailsService {
     public UserReadDto create(UserCreateUpdateDto userDto) {
         return Optional.of(userDto)
                 .map(userCreateUpdateMapper::map)
-                .map(user -> {
-                    user.setRole(Role.USER);
-                    return userRepository.save(user);
-                })
+                .map(userRepository::save)
                 .map(userReadMapper::map)
                 .orElseThrow();
     }

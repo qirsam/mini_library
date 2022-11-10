@@ -1,5 +1,6 @@
 package com.qirsam.mini_library.mapper;
 
+import com.qirsam.mini_library.database.entity.user.Role;
 import com.qirsam.mini_library.database.entity.user.User;
 import com.qirsam.mini_library.web.dto.UserCreateUpdateDto;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,11 @@ public class UserCreateUpdateMapper implements Mapper<UserCreateUpdateDto, User>
         user.setFirstname(object.getFirstname());
         user.setLastname(object.getLastname());
         user.setBirthDate(object.getBirthDate());
-        user.setRole(object.getRole());
+        if (object.getRole() == null) {
+            user.setRole(Role.USER);
+        } else {
+            user.setRole(object.getRole());
+        }
 
         Optional.ofNullable(object.getRawPassword())
                 .filter(StringUtils::hasText)
