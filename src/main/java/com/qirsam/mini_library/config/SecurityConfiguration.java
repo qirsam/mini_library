@@ -21,7 +21,7 @@ import java.util.Set;
 @Configuration
 @EnableMethodSecurity
 @RequiredArgsConstructor
-public class SecurityConfiguration {
+public class SecurityConfiguration{
 
     private final UserService userService;
 
