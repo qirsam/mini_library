@@ -11,4 +11,5 @@ public class CommonPointcuts {
     @Pointcut("@within(org.springframework.stereotype.Service)")
     public void isServiceLayer() {}
 
+
 }
