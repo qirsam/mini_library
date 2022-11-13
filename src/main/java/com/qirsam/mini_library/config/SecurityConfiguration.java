@@ -29,7 +29,7 @@ public class SecurityConfiguration{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(urlConfig -> urlConfig
                 .antMatchers("/books/add-book").hasAnyAuthority(Role.MODERATOR.getAuthority(), Role.ADMIN.getAuthority())
-                .antMatchers("/registration", "/login", "/", "/api/v1/**", "/images/**").permitAll()
+                .antMatchers("/registration", "/login", "/", "/api/v1/**", "/images/**", "/css/**").permitAll()
                 .antMatchers( "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                 .antMatchers("/books", "/books/{\\d+}", "/authors", "/authors/{\\d+}").permitAll()
                 .anyRequest().authenticated() //todo Обновление и удаление для админа и модератора
