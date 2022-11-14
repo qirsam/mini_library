@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.lang.reflect.Proxy;
+import java.util.Collections;
 import java.util.Set;
 
 @Configuration
@@ -44,25 +45,27 @@ public class SecurityConfiguration{
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
                         .deleteCookies("JSESSIONID"))
+
                 .oauth2Login(config -> config
                         .loginPage("/login")
-                        .defaultSuccessUrl("/books")
-                        .userInfoEndpoint(userInfo -> userInfo.oidcUserService(oidcUserService())));
+                        .defaultSuccessUrl("/check-users")
+                        .userInfoEndpoint(userInfo -> userInfo.oidcUserService(oidcUserService()))
+                        .failureUrl("/registration"));
 
         return http.build();
     }
 
+
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
         return userRequest -> {
             String username = userRequest.getIdToken().getClaim("email");
-            UserDetails userDetails;
             try {
                 userService.loadUserByUsername(username);
             } catch (UsernameNotFoundException ex) {
-                userService.createO2AuthUser(userRequest.getIdToken());
-            } finally {
-                userDetails = userService.loadUserByUsername(username);
+                return new DefaultOidcUser(Collections.singleton(Role.USER_GOOGLE), userRequest.getIdToken());
             }
+            UserDetails userDetails = userService.loadUserByUsername(username);
+
             var oidcUser = new DefaultOidcUser(userDetails.getAuthorities(), userRequest.getIdToken());
 
             var userDetailsMethods = Set.of(UserDetails.class.getMethods());

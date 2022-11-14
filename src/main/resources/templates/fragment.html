@@ -33,7 +33,7 @@
                 </ul>
             </div>
 
-            <div class="dropdown justify-content-end" th:if="${#authorization.expression('isAuthenticated()')}">
+            <div class="dropdown justify-content-end" sec:authorize="hasAnyAuthority('USER', 'ADMIN', 'MODERATOR')">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
                         data-bs-toggle="dropdown" aria-expanded="false"
                         th:text="${#authentication.principal.username}">Email
@@ -47,7 +47,7 @@
                     <input hidden type="submit" value="Sign Out"/>
                 </form>
             </div>
-            <div class="d-flex justify-content-end" th:unless="${#authorization.expression('isAuthenticated()')}">
+            <div class="d-flex justify-content-end" sec:authorize="!isAuthenticated() || hasAuthority('USER_GOOGLE')">
                 <a class="btn btn-outline-success" href="/login">Войти</a>
             </div>
         </div>
