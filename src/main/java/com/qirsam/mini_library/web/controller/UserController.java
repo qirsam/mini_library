@@ -15,6 +15,9 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -140,4 +143,24 @@ public class UserController {
         return "redirect:/change-password";
     }
 
-}
+    @GetMapping("/check-users")
+    public String checkUsers(RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getAuthorities().contains(Role.USER_GOOGLE)) {
+            UserCreateUpdateDto tempUser = new UserCreateUpdateDto(
+                    ((DefaultOidcUser) authentication.getPrincipal()).getClaim("email"),
+                    null,
+                    ((DefaultOidcUser) authentication.getPrincipal()).getClaim("given_name"),
+                    ((DefaultOidcUser) authentication.getPrincipal()).getClaim("family_name"),
+                    null,
+                    Role.USER
+            );
+            redirectAttributes.addFlashAttribute("user", tempUser);
+            return "redirect:/registration";
+        }
+            return "redirect:/";
+
+        }
+    }
+
+
