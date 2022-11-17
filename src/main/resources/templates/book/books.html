@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
     <title>Список книг</title>
     <!-- Font Awesome -->
     <link
@@ -16,68 +16,96 @@
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
     />
     <!-- MDB -->
-    <link rel="stylesheet" th:href="@{/css/mdb.dark.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/mdb.dark.min.css}"/>
+    <link rel="stylesheet" href="/static/css/mdb.dark.min.css"/>
+
 </head>
 <body>
+<!--NavBar-->
 <div th:insert="~{fragment :: header}"></div>
-<form action="/books">
-    <div>
-        <label for="title">Название книги
-            <input id="title" type="text" name="title" th:value="${filter.title()}">
-        </label>
-        <label for="authorLastname">Фамилия автора
-            <input id="authorLastname" type="text" name="authorLastname" th:value="${filter.authorLastname()}">
-        </label>
-        <label for="genre">Жанр
-            <select id="genre" name="genre" th:value="${genres}">
-                <option></option>
-                <option th:each="genre : ${genres}"
-                        th:value="${genre}"
-                        th:selected="${genre == filter.genre}"
-                        th:text="${genre.value}">Жанр
-                </option>
-            </select>
-        </label>
-    </div>
-    <button type="submit">Filter</button>
-</form>
-<div sec:authorize="hasAnyAuthority('ADMIN', 'MODERATOR')">
-    <a href="/books/add-book">Добавить книги</a>
-</div>
-<div th:each="book : ${books.content()}">
-    <a th:href="@{'/books/' + ${book.id}}" th:text="|${book.author.lastname} ${book.author.firstname}. ${book.title}|">Книга</a>
-</div>
+<div class="container">
+    <!--    Filter Form-->
+    <div class="row">
+        <div class="col-3">
+            <form action="/books">
+                <div class="form-outline mb-2">
+                    <input class="form-control" id="title" type="text" name="title" th:value="${filter.title()}">
+                    <label class="form-label" for="title">Название книги </label>
+                </div>
+                <div class="form-outline mb-2">
+                    <input class="form-control" id="authorLastname" type="text" name="authorLastname"
+                           th:value="${filter.authorLastname()}">
+                    <label class="form-label" for="authorLastname">Фамилия автора </label>
+                </div>
+                <select class="select" data-mdb-clear-button="true" data-mdb-filter="true" id="genre"
+                        name="genre" th:value="${genres}">
+                    <option hidden></option>
+                    <option th:each="genre : ${genres}"
+                            th:value="${genre}"
+                            th:selected="${genre == filter.genre}"
+                            th:text="${genre.value}">
+                    </option>
+                </select>
+                <label class="form-label select-label" for="genre">Жанр</label>
+                <button type="submit" class="btn btn-outline-info ripple-surface">
+                    Фильтр
+                </button>
+            </form>
+        </div>
 
-<footer class="panel-footer">
-    Всего книг: [[${totalBooks}]] : Страница [[${currentPage}]] из [[${totalPages}]]
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" th:if="${currentPage > 1}" th:href="@{/books/page/1}">Первая</a>
-                <span class="page-link" th:unless="${currentPage > 1}">Первая</span>
-            </li>
-            <li class="page-item">
-                <a class="page-link" th:if="${currentPage > 1}"
-                   th:href="@{'/books/page/' + ${currentPage - 1}}">&laquo;</a>
-                <span class="page-link" th:unless="${currentPage > 1}">&laquo;</span>
-            </li>
-            <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}">
-                <a class="page-link" th:if="${i != currentPage}" th:href="@{'/books/page/' + ${i}}">[[${i}]]</a>
-                <span class="page-link active" th:unless="${i != currentPage}">[[${i}]]</span>
-            </li>
-            <li class="page-item">
-                <a class="page-link" th:if="${currentPage < totalPages}"
-                   th:href="@{'/books/page/' + ${currentPage + 1}}">&raquo;</a>
-                <span class="page-link" th:unless="${currentPage < totalPages}">&raquo;</span>
-            </li>
-            <li class="page-item">
-                <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/books/page/' + ${totalPages}}">Последняя</a>
-                <span class="page-link" th:unless="${currentPage < totalPages}">Последняя</span>
-            </li>
-        </ul>
-    </nav>
-</footer>
+        <div class="col-6 text-center">
+            <!--    Add Book Button-->
+            <div sec:authorize="hasAnyAuthority('ADMIN', 'MODERATOR')">
+                <a href="/books/add-book">Добавить книги</a>
+            </div>
+            <!--    List of Books-->
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div th:each="book : ${books.content()}">
+                <div class="col">
+                    <div class="card">
+                <a th:href="@{'/books/' + ${book.id}}"
+                   th:text="|${book.author.lastname} ${book.author.firstname}. ${book.title}|">Книга</a>
+            </div>
+        </div>
+        <!--    Pagination-->
+        <div class="position-absolute top-100 start-50 translate-middle">
+            <footer class="panel-footer">
+                Всего книг: [[${totalBooks}]] : Страница [[${currentPage}]] из [[${totalPages}]]
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" th:if="${currentPage > 1}" th:href="@{/books/page/1}">Первая</a>
+                            <span class="page-link" th:unless="${currentPage > 1}">Первая</span>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" th:if="${currentPage > 1}"
+                               th:href="@{'/books/page/' + ${currentPage - 1}}">&laquo;</a>
+                            <span class="page-link" th:unless="${currentPage > 1}">&laquo;</span>
+                        </li>
+                        <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                            <a class="page-link" th:if="${i != currentPage}"
+                               th:href="@{'/books/page/' + ${i}}">[[${i}]]</a>
+                            <span class="page-link active" th:unless="${i != currentPage}">[[${i}]]</span>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" th:if="${currentPage < totalPages}"
+                               th:href="@{'/books/page/' + ${currentPage + 1}}">&raquo;</a>
+                            <span class="page-link" th:unless="${currentPage < totalPages}">&raquo;</span>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" th:if="${currentPage < totalPages}"
+                               th:href="@{'/books/page/' + ${totalPages}}">Последняя</a>
+                            <span class="page-link" th:unless="${currentPage < totalPages}">Последняя</span>
+                        </li>
+                    </ul>
+                </nav>
+            </footer>
+        </div>
+    </div>
+</div>
 <!-- MDB -->
-<script type="text/javascript"  th:src="@{/css/mdb.min.js}"></script>
+<script type="text/javascript" th:src="@{/css/mdb.min.js}"></script>
+<script type="text/javascript" src="/static/css/mdb.min.js"></script>
+
 </body>
 </html>
