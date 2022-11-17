@@ -2,9 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Регистрация</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
     <!-- Font Awesome -->
     <link
             rel="stylesheet"
@@ -16,7 +16,8 @@
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
     />
     <!-- MDB -->
-    <link rel="stylesheet" th:href="@{/css/mdb.dark.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/mdb.dark.min.css}"/>
+    <link rel="stylesheet" href="/static/css/mdb.dark.min.css"/>
 </head>
 <body>
 <section class="vh-100">
@@ -27,36 +28,50 @@
                 <div class="row gy-2">
                     <div class="col-lg-5">
                         <div class="form-outline mb-4">
-                            <input type="email" id="form1Example13" class="form-control form-control-lg" name="username"
+                            <input type="email"
+                                   id="form1Example13"
+                                   class="form-control form-control-lg"
+                                   name="username"
                                    autocomplete="off"
                                    th:value="*{getUsername}" th:field="*{username}"/>
                             <label class="form-label" for="form1Example13">E-mail</label>
                         </div>
-                        <div class="form-group">
-                            <div class="input-group" id="show_hide_password">
-                                <input type="password" class="form-control" id="password" autocomplete="off"
-                                       th:field="*{rawPassword}"/>
-                                <label for="password">Пароль</label>
-                            </div>
+                        <div class="form-outline mb-4">
+                            <input type="password"
+                                   class="form-control form-control-lg"
+                                   name="password"
+                                   id="form1Example12"
+                                   autocomplete="off"
+                                   th:field="*{rawPassword}"/>
+                            <label class="form-label" for="form1Example12">Пароль</label>
                         </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="lastname" autocomplete="off"
-                                       th:value="*{lastname}" th:field="*{lastname}">
-                                <label for="lastname">Фамилия</label>
-                            </div>
+                        <div class="form-outline mb-4">
+                            <input type="text"
+                                   class="form-control form-control-lg"
+                                   name="lastname"
+                                   id="form1Example11"
+                                   autocomplete="off"
+                                   th:value="*{lastname}"
+                                   th:field="*{lastname}">
+                            <label class="form-label" for="form1Example11">Фамилия</label>
                         </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="firstname" autocomplete="off"
-                                       th:value="*{firstname}" th:field="*{firstname}">
-                                <label for="firstname">Имя</label>
-                            </div>
+                        <div class="form-outline mb-4">
+                            <input type="text"
+                                   class="form-control form-control-lg"
+                                   id="firstname"
+                                   autocomplete="off"
+                                   th:value="*{firstname}"
+                                   th:field="*{firstname}">
+                            <label class="form-label" for="firstname">Имя</label>
                         </div>
-                        <input type="date" class="form-control" id="birthDate" th:value="*{birthDate}"
-                               th:field="*{birthDate}">
-                        <label for="birthDate">Дата рождения</label>
-
+                        <div class="form-outline mb-4">
+                            <input type="date"
+                                   class="form-control form-control-lg"
+                                   id="birthDate"
+                                   th:value="*{birthDate}"
+                                   th:field="*{birthDate}">
+                            <label class="form-label" for="birthDate">Дата рождения</label>
+                        </div>
                     </div>
                     <div class="row gy-2">
 
@@ -77,6 +92,7 @@
 
 
 <!-- MDB -->
-<script type="text/javascript"  th:src="@{/css/mdb.min.js}"></script>
+<script type="text/javascript" th:src="@{/css/mdb.min.js}"></script>
+<script type="text/javascript" src="/static/css/mdb.min.js"></script>
 </body>
 </html>

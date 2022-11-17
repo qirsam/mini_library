@@ -24,7 +24,7 @@
     <img src="/images/notFound.png" alt="NotFound">
 </div>
 <div th:if="${book.image}">
-<!--    <img th:src="@{/api/v1/books/{bookId}/cover(bookId=${book.id})}" width="270" height="405" alt="Cover Book">-->
+    <img th:src="@{/api/v1/books/{bookId}/cover(bookId=${book.id})}" width="270" height="405" alt="Cover Book">
     <img th:src="${cover}" width="270" height="405" alt="Cover Book">
 </div>
 <b th:text="${book.title}">Название книги</b> <br>

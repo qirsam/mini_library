@@ -17,6 +17,7 @@
     />
     <!-- MDB -->
     <link rel="stylesheet" th:href="@{/css/mdb.dark.min.css}" />
+    <!--    <link rel="stylesheet" href="/static/css/mdb.dark.min.css" />-->
 </head>
 <body>
 <section class="vh-100">
@@ -30,13 +31,18 @@
                 <form th:action="@{login}" method="post">
                     <!-- Email input -->
                     <div class="form-outline mb-4">
-                        <input type="email" id="typeEmail" name="username" class="form-control form-control-lg"/>
+                        <input type="email"
+                               id="typeEmail"
+                               name="username"
+                               class="form-control form-control-lg"/>
                         <label class="form-label" for="typeEmail">E-mail</label>
                     </div>
 
                     <!-- Password input -->
                     <div class="form-outline mb-4">
-                        <input type="password" id="typePassword" name="password"
+                        <input type="password"
+                               id="typePassword"
+                               name="password"
                                class="form-control form-control-lg mb-4q"/>
                         <label class="form-label" for="typePassword">Пароль</label>
                     </div>
@@ -62,9 +68,6 @@
     </div>
 </section>
 
-<!-- MDB -->
-<script type="text/javascript"  th:src="@{/css/mdb.min.js}"></script>
-
-<!-- Custom scripts -->
 </body>
+<script type="text/javascript"  th:src="@{/css/mdb.min.js}"></script>
 </html>
