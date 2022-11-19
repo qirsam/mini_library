@@ -32,7 +32,7 @@ spring:
       max-request-size: 1000000
 server:
   port: 8080
-app.image.bucket : /home/qirsam/IdeaProjects/mini_library/images
+app.image.bucket : /home/qirsam/apps/mini-library/images/
 yandex.disk.token : y0_AgAAAAADZew7AAh5dwAAAADQmSOAoC-FrFeeSgOZ_4US-ED58oFbmig
 logging:
   file:

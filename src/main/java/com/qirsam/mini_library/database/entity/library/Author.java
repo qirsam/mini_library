@@ -29,5 +29,4 @@ class Author extends BaseEntity<Integer> {
 
     private String description;
 
-    private String image;
 }

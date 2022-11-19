@@ -41,7 +41,7 @@ public class BookController {
                 .map(book -> {
                     model.addAttribute("book", book);
                     model.addAttribute("statuses", Status.values());
-                    model.addAttribute("cover", imageService.getImageLinkFromYandexDisk("book", book.getId() + ".jpg"));
+//                    model.addAttribute("cover", imageService.getImageLinkFromYandexDisk("book", book.getId() + ".jpg"));
                     userBookService.findByPrincipalUserIdAndBookId(id)
                             .map(userBook -> model.addAttribute("userBook", userBook));
                     return "book/book";

@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/books")
+@RequestMapping("/api/v1/authors")
 @RequiredArgsConstructor
-public class BookRestController {
+public class AuthorRestController {
 
-    private  final ImageService imageService;
+    private final ImageService imageService;
 
     @GetMapping("/{id}/cover")
-    public ResponseEntity<byte[]> findCover(@PathVariable("id") Long id) {
-        return imageService.getImage(id, "/book")
+    public ResponseEntity<byte[]> findCover(@PathVariable("id") Integer id) {
+        return imageService.getImage(id, "/author")
                 .map(content -> ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_JPEG_VALUE)
                         .contentLength(content.length)
