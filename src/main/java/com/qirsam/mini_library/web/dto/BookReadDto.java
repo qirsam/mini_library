@@ -10,5 +10,4 @@ public class BookReadDto {
     AuthorReadDto author;
     Genre genre;
     String description;
-    String image;
 }

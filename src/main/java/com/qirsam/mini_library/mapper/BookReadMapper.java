@@ -24,8 +24,7 @@ public class BookReadMapper implements Mapper<Book, BookReadDto> {
                 object.getTitle(),
                 author,
                 object.getGenre(),
-                object.getDescription(),
-                object.getImage()
+                object.getDescription()
         );
     }
 }

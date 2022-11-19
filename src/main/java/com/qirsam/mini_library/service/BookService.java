@@ -1,7 +1,6 @@
 package com.qirsam.mini_library.service;
 
 import com.qirsam.mini_library.database.entity.filter.BookFilter;
-import com.qirsam.mini_library.database.entity.library.Book;
 import com.qirsam.mini_library.database.querydsl.QPredicates;
 import com.qirsam.mini_library.database.repository.BookRepository;
 import com.qirsam.mini_library.mapper.BookCreateUpdateMapper;
@@ -15,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +30,8 @@ public class BookService {
     private final BookRepository bookRepository;
     private final ImageService imageService;
     private final ImageUtil imageUtil;
+    private static final String bookFolder = "book/";
+
 
     public Optional<BookReadDto> findById(Long id) {
         return bookRepository.findById(id)
@@ -57,18 +57,12 @@ public class BookService {
                 .toList();
     }
 
-    public Optional<byte[]> findCover(Long id) {
-        return bookRepository.findById(id)
-                .map(Book::getImage)
-                .filter(StringUtils::hasText)
-                .flatMap(imageService::getImage);
-    }
 
     @Transactional
     public BookReadDto create(BookCreateUpdateDto bookDto) {
         return Optional.of(bookDto)
                 .map(dto -> {
-                    imageService.uploadImageYandexDisk(dto.getImage(), "book/", imageUtil.getBookImageFilename());
+                    imageService.uploadImageToDisk(dto.getImage(), bookFolder, imageUtil.getBookImageFilename());
                     return bookCreateUpdateMapper.map(dto);
                 })
                 .map(bookRepository::save)
@@ -83,7 +77,7 @@ public class BookService {
     public Optional<BookReadDto> update(Long id, BookCreateUpdateDto bookDto) {
         return bookRepository.findById(id)
                 .map(book -> {
-                    imageService.uploadImageYandexDisk(bookDto.getImage(), "book/", book.getId() + ".jpg");
+                    imageService.uploadImageToDisk(bookDto.getImage(), bookFolder, book.getId() + ".jpg");
                     return bookCreateUpdateMapper.map(bookDto, book);
                 })
                 .map(bookRepository::saveAndFlush)

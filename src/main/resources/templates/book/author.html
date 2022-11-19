@@ -20,6 +20,7 @@
 </head>
 <body>
 <div th:insert="~{fragment :: header}"></div>
+<img th:src="@{/api/v1/authors/{authorId}/cover(authorId=${author.id})}" width="270" height="405" alt="Cover Book">
 <b th:text="${author.lastname}">Фамилия</b>
 <b th:text="${author.firstname}">Имя</b><br>
 <time th:text="${#temporals.format(author.birthDate, 'dd-MM-yyyy')}">День рождения</time>

@@ -32,8 +32,16 @@ public class ImageService {
 
 
     @SneakyThrows
-    public Path uploadToDisk(String imageName, InputStream content) {
-        var fullImagePath = Path.of(bucket, imageName);
+    public Path uploadImageToDisk(MultipartFile image, String folder, String imageName) {
+        if (!image.isEmpty()) {
+            return uploadToDisk(imageName, folder, image.getInputStream());
+        } else
+            return Paths.get("");
+    }
+
+    @SneakyThrows
+    public Path uploadToDisk(String imageName, String folder, InputStream content) {
+        var fullImagePath = Path.of(bucket, folder, imageName);
         try (content) {
             Files.createDirectories(fullImagePath.getParent());
             return Files.write(fullImagePath, content.readAllBytes(), CREATE, TRUNCATE_EXISTING);
@@ -41,22 +49,15 @@ public class ImageService {
     }
 
     @SneakyThrows
-    public Path uploadImageToDisk(MultipartFile image) {
-        if (!image.isEmpty()) {
-            return uploadToDisk(image.getOriginalFilename(), image.getInputStream());
-        } else
-            return Paths.get("");
-    }
-
-    @SneakyThrows
-    public Optional<byte[]> getImage(String imagePath) {
-        var fullImagePath = Path.of(bucket, imagePath);
+    public Optional<byte[]> getImage(Number id, String folder) {
+        var fullImagePath = Path.of(bucket, folder, id.toString() + ".jpg");
         return Files.exists(fullImagePath)
                 ? Optional.of(Files.readAllBytes(fullImagePath))
                 : Optional.empty();
     }
 
     @SneakyThrows
+    @Deprecated
     public void uploadImageYandexDisk(MultipartFile file, String folder, String filename) {
         var client = new RestClient(
                 new Credentials("", token)
@@ -72,6 +73,7 @@ public class ImageService {
     }
 
     @SneakyThrows
+    @Deprecated
     public String getImageLinkFromYandexDisk(String folder, String filename) {
         var client = new MyRestClient(
                 new Credentials("", token)

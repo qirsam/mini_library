@@ -31,6 +31,8 @@ public class AuthorService {
     private final ImageService imageService;
     private final ImageUtil imageUtil;
 
+    private static final String authorFolder = "author/";
+
     public List<AuthorReadDto> findAll() {
         return authorRepository.findAllByOrderByLastnameAsc().stream()
                 .map(authorReadMapper::map)
@@ -57,7 +59,7 @@ public class AuthorService {
     public AuthorReadDto create(AuthorCreateUpdateDto authorDto) {
         return Optional.of(authorDto)
                 .map(dto -> {
-                    imageService.uploadImageYandexDisk(dto.getImage(), "author/", imageUtil.getAuthorImageFilename());
+                    imageService.uploadImageToDisk(dto.getImage(), authorFolder, imageUtil.getAuthorImageFilename());
                     return authorCreateUpdateMapper.map(dto);
                 })
                 .map(authorRepository::save)
@@ -70,12 +72,13 @@ public class AuthorService {
     public Optional<AuthorReadDto> update(Integer id, AuthorCreateUpdateDto authorDto) {
      return authorRepository.findById(id)
              .map(author -> {
-                 imageService.uploadImageYandexDisk(authorDto.getImage(), "author/", author.getId() + ".jpg");
+                 imageService.uploadImageToDisk(authorDto.getImage(), authorFolder, author.getId() + ".jpg");
                  return authorCreateUpdateMapper.map(authorDto, author);
              })
              .map(authorRepository::saveAndFlush)
              .map(authorReadMapper::map);
     }
+
 
     @Transactional
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
