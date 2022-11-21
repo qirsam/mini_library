@@ -2,8 +2,8 @@ spring:
   application:
     name: mini_library
   datasource:
-    username: qirsam
-    password: local_db_password
+    username: qirsam_admin
+    password: mini_library_password
     url: jdbc:postgresql://localhost:5431/library_db
     driver-class-name: org.postgresql.Driver
   jpa:
@@ -23,7 +23,7 @@ spring:
           google:
             clientId: 698821590000-eq767db10mpad01pihei56lkrq4evnp7.apps.googleusercontent.com
             clientSecret: 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
-            redirectUri: http://localhost:8080/login/oauth2/code/google
+            redirectUri: http://www.qirsam.com/login/oauth2/code/google
   messages:
     basename: messages
   servlet:
@@ -31,7 +31,7 @@ spring:
       max-file-size: 1000000
       max-request-size: 1000000
 server:
-  port: 8080
+  port: 80
 app.image.bucket : /home/qirsam/apps/mini-library/images/
 yandex.disk.token : y0_AgAAAAADZew7AAh5dwAAAADQmSOAoC-FrFeeSgOZ_4US-ED58oFbmig
 logging:

@@ -13824,8 +13824,9 @@ i.flag-zimbabwe:before, i.flag-zw:before {
     overflow: hidden;
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: 50%
+    background-position: 50%;
 }
+
 
 .mask {
     position: absolute;

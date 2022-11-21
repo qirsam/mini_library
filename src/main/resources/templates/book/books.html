@@ -17,7 +17,6 @@
     />
     <!-- MDB -->
     <link rel="stylesheet" th:href="@{/css/mdb.dark.min.css}"/>
-    <link rel="stylesheet" href="/static/css/mdb.dark.min.css"/>
 
 </head>
 <body>
@@ -70,14 +69,28 @@
         </form>
     </section>
     <section>
-        <div class="row-6 text-center my-3">
-            <!--    List of Books-->
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                <div th:each="book : ${books.content()}">
-                    <div class="col">
-                        <div class="card">
-                            <a th:href="@{'/books/' + ${book.id}}"
-                               th:text="|${book.author.lastname} ${book.author.firstname}. ${book.title}|">Книга</a>
+        <div class="row row-cols-4  my-3 g-2">
+            <div th:each="book : ${books.content()}">
+                <div class="col">
+                    <div class="d-flex justify-content-center">
+                        <div class="card text-center h-100" style="max-width: 265px;">
+                            <div class="bg-image hover-overlay ripple ripple-surface ripple-surface-light"
+                                 data-mdb-ripple-color="light" style="max-height: 375px;">
+                                <img th:src="@{/api/v1/books/{bookId}/cover(bookId=${book.id})}"
+                                     class="card-img-top"
+                                     th:alt="${book.title}">
+                                <a th:href="@{'/books/' + ${book.id}}">
+                                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <a th:href="@{'/books/' + ${book.id}}">
+                                    <h5 class="card-title" th:text="${book.title}"></h5></a>
+                                <a th:href="@{'/authors/' + ${book.author.id}}">
+                                    <p class="card-text"
+                                       th:text="|${book.author.lastname} ${book.author.firstname}|"></p>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,44 +98,53 @@
         </div>
     </section>
     <!--    Pagination-->
-    <div class="position-absolute top-100 start-50 translate-middle">
-        <footer class="panel-footer">
-            Всего книг: [[${totalBooks}]] : Страница [[${currentPage}]] из [[${totalPages}]]
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a class="page-link" th:if="${currentPage > 1}"
-                           th:href="@{/books/page/1}">Первая</a>
-                        <span class="page-link" th:unless="${currentPage > 1}">Первая</span>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" th:if="${currentPage > 1}"
-                           th:href="@{'/books/page/' + ${currentPage - 1}}">&laquo;</a>
-                        <span class="page-link" th:unless="${currentPage > 1}">&laquo;</span>
-                    </li>
-                    <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}">
-                        <a class="page-link" th:if="${i != currentPage}"
-                           th:href="@{'/books/page/' + ${i}}">[[${i}]]</a>
-                        <span class="page-link active" th:unless="${i != currentPage}">[[${i}]]</span>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" th:if="${currentPage < totalPages}"
-                           th:href="@{'/books/page/' + ${currentPage + 1}}">&raquo;</a>
-                        <span class="page-link" th:unless="${currentPage < totalPages}">&raquo;</span>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" th:if="${currentPage < totalPages}"
-                           th:href="@{'/books/page/' + ${totalPages}}">Последняя</a>
-                        <span class="page-link" th:unless="${currentPage < totalPages}">Последняя</span>
-                    </li>
-                </ul>
-            </nav>
-        </footer>
+    <div class="row my-5">
+        <div class="position-relative top-100 start-50 translate-middle">
+            <div class="row row-cols-4">
+                <div class="col-md-auto">
+                    <div class="d-flex justify-content-center">
+                        Всего книг: [[${totalBooks}]] : Страница [[${currentPage}]] из [[${totalPages}]]
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center pagination-circle">
+                            <li class="page-item">
+                                <a class="page-link" th:if="${currentPage > 1}"
+                                   th:href="@{/books/page/1}">Первая</a>
+                                <span class="page-link" th:unless="${currentPage > 1}">Первая</span>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" th:if="${currentPage > 1}"
+                                   th:href="@{'/books/page/' + ${currentPage - 1}}">&laquo;</a>
+                                <span class="page-link" th:unless="${currentPage > 1}">&laquo;</span>
+                            </li>
+                            <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                                <a class="page-link" th:if="${i != currentPage}"
+                                   th:href="@{'/books/page/' + ${i}}">[[${i}]]</a>
+                                <span class="page-link active" th:unless="${i != currentPage}">[[${i}]]</span>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" th:if="${currentPage < totalPages}"
+                                   th:href="@{'/books/page/' + ${currentPage + 1}}">&raquo;</a>
+                                <span class="page-link" th:unless="${currentPage < totalPages}">&raquo;</span>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" th:if="${currentPage < totalPages}"
+                                   th:href="@{'/books/page/' + ${totalPages}}">Последняя</a>
+                                <span class="page-link" th:unless="${currentPage < totalPages}">Последняя</span>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!-- MDB -->
 <script type="text/javascript" th:src="@{/css/mdb.min.js}"></script>
-<script type="text/javascript" src="/static/css/mdb.min.js"></script>
 
 </body>
 </html>
